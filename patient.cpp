@@ -1,6 +1,9 @@
 #include <iostream>
 
 class Patient{
+    /**Fields are corresponding to the dataset provided in the following URL:
+     * https://www.kaggle.com/datasets/joniarroba/noshowappointments
+    */
     public:
         int id;
         int appointment_id;
