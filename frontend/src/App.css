@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+}
+
+.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -10,12 +13,91 @@
   color: white;
 }
 
-.App-header {
+.login-form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
-h1 {
-  font-size: 3rem;
+.form-group {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.login-button {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+.login-button:focus {
+  outline: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .App-header {
+    font-size: calc(8px + 2vmin);
+  }
+
+  .login-form {
+    max-width: 300px;
+  }
+
+  .form-group input {
+    font-size: 12px;
+  }
+
+  .login-button {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .App-header {
+    font-size: calc(6px + 2vmin);
+  }
+
+  .login-form {
+    max-width: 200px;
+  }
+
+  .form-group input {
+    font-size: 10px;
+  }
+
+  .login-button {
+    font-size: 12px;
+  }
 }
