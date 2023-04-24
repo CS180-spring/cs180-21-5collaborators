@@ -1,1 +1,24 @@
 a.exe
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/jetlion_frontend/node_modules
+/jetlion_frontend/.pnp
+/jetlion_frontend/.pnp.js
+
+# testing
+/jetlion_frontend/coverage
+
+# production
+/jetlion_frontend/build
+
+# misc
+/jetlion_frontend/.DS_Store
+/jetlion_frontend/.env.local
+/jetlion_frontend/.env.development.local
+/jetlion_frontend/.env.test.local
+/jetlion_frontend/.env.production.local
+
+/jetlion_frontend/npm-debug.log*
+/jetlion_frontend/yarn-debug.log*
+/jetlion_frontend/yarn-error.log*
