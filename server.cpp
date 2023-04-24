@@ -41,6 +41,19 @@ int main()
         return x;
      // return x;
     });
+
+    CROW_ROUTE(app, "/deletePatient")
+    ([&patients](const crow::request& req){
+        auto updates = req.url_params;
+        int id = atoi(updates.get("id"));
+        std::cout << id << std::endl;
+        
+        crow::json::wvalue x;
+        x.delete(id);
+
+        return x;
+    });
+
     app.port(3000).multithreaded().run();
 }
 
