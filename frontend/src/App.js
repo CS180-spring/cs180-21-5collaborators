@@ -9,8 +9,8 @@ function App() {
         <img src={logo} width={215} height={100} />
         <form className="login-form">
           <div className="form-group">
-            <label htmlFor="userID">User ID:</label>
-            <input type="text" id="userID" name="userID" placeholder="Enter your User ID" required />
+            <label htmlFor="userID">Doctor ID:</label>
+            <input type="text" id="userID" name="userID" placeholder="Enter your Doctor ID" required />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password:</label>
