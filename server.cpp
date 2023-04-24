@@ -15,8 +15,7 @@ class Patient{
 };
 
 int main()
-{ 
-
+{
     crow::SimpleApp app;
     std::vector<Patient> patients;
     Patient Test(0,"Bob",45);
@@ -59,8 +58,9 @@ int main()
         Patient* updatedPat = nullptr;
         for(unsigned i =0; i < patients.size();i++){
             if(patients[i].id == id){
-                patients[i].name = updateName;
-                patients[i].age = updateAge;
+                std::string nName = updateName;
+                patients[i].name = (nName!="")?updateName:patients[i].name;
+                patients[i].age = updateAge?updateAge:patients[i].age;
                 updatedPat = &patients[i];
             }
         }
@@ -74,20 +74,22 @@ int main()
         return x;
      // return x;
     });
-
-	
+    
+    
     CROW_ROUTE(app, "/deletePatient")
-    ([&patients](const crow::request& req){
-        auto updates = req.url_params;
-        int id = atoi(updates.get("id"));
-        std::cout << id << std::endl;
-        
-        crow::json::wvalue x;
-        x.delete(id);
-
-        return x;
-    });
-
+       ([&patients](const crow::request& req){
+           auto updates = req.url_params;
+           int id = atoi(updates.get("id"));
+           std::cout << id << std::endl;
+           for(unsigned i =0; i < patients.size();i++){
+               if(patients[i].id == id){
+                   patients.erase(patients.begin()+i);
+               }
+           }
+           
+           crow::json::wvalue x;
+           return x;
+       });
     app.port(3000).multithreaded().run();
 }
 
