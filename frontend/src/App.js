@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.png';
-import './App.css';
+import React, { useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Dashboard from "./Dashboard/Dashboard";
+import Login from "./Login";
+import { PrivateRoute } from "./PrivateRoute";
 
 function App() {
+  const [authUser, setAuthUser] = useState(undefined);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} width={215} height={100} />
-        <form className="login-form">
-          <div className="form-group">
-            <label htmlFor="userID">Doctor ID:</label>
-            <input type="text" id="userID" name="userID" placeholder="Enter your Doctor ID" required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required />
-          </div>
-          <button type="submit" className="login-button">Log In</button>
-        </form>
-      </header>
-    </div>
+    <AppContext.Provider value={{ authUser, setAuthUser }}>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
+    </AppContext.Provider>
   );
 }
-
+export const AppContext = React.createContext();
 export default App;
