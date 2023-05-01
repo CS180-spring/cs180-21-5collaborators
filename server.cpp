@@ -61,7 +61,7 @@ int main()
    // crow::SimpleApp app;
     //tst
 
-    std::string path2Patient = "C:\\Users\\PC\\Desktop\\CS180DB\\test.json";
+    std::string path2Patient = "/Users/jonassegundo/Desktop/180DB/test.json";
     std::ifstream myFile(path2Patient);
     std::ostringstream tmp;
     tmp << myFile.rdbuf();
@@ -308,6 +308,11 @@ int main()
         id = 1;
     }
     auto i = patients.find(id);
+            if(i==patients.end()){
+                x["error"] = "No patient found";
+                res.write(x.dump());
+                return res;
+            }
     x["PatientId"] = i->second.id;
     x["PatientName"] = i->second.name;
     x["AppointmentID"] = i->second.appointmentId;
@@ -329,10 +334,30 @@ int main()
 
     CROW_ROUTE(app, "/deletePatient")
         ([&patients](const crow::request& req) {
-        auto updates = req.url_params;
-    crow::json::wvalue x;
-    crow::response p;
-    return p;
+        crow::response res;
+        crow::json::wvalue x;
+    // Set CORS headers
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Methods", "GET");
+        res.set_header("Access-Control-Allow-Headers", "Content-Type");
+        auto url = req.raw_url;
+    if (url.find("id") == std::string::npos) {
+        x["error"] = "Missing parameter";
+        res.write(x.dump());
+        return res;
+    }
+    auto patInf = req.url_params;
+    int id = atoi(patInf.get("id"));
+    if (id == 0) {
+        id = 1;
+    }
+    auto i = patients.erase(id);
+    if(!i){
+        x["error"] = "No patient found";
+        res.write(x.dump());
+    }
+    res.write("Success!");
+    return res;
             });
 
  
@@ -351,7 +376,7 @@ int main()
     return res;
             });
     
-    app.port(3001).multithreaded().run();
+    app.port(3000).multithreaded().run();
 }
 
 //http://0.0.0.0:3000/updatePatient?newName=Jack&newAge=20&id=1&newAppointID=213213213&newGend=M&newSched=1/2/3&newAppDay=1/2/3&newNeigh=Oakland&scholar=0&hyperTen=1&diabet=0&alch=1&handi=1&sms=1&ns=yes
