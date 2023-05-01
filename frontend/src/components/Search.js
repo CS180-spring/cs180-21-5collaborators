@@ -1,23 +1,25 @@
 import React from "react";
 import { Form, FormControl, InputGroup } from "react-bootstrap";
 
-const Search = ({ searchBy, setSearchBy, searchValue, setSearchValue }) => {
+const Search = ({ formik }) => {
   return (
     <div className="search-container">
       <Form>
         <InputGroup>
           <Form.Control
             as="select"
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
+            id="searchBy"
+            value={formik.values.searchBy}
+            onChange={formik.handleChange}
           >
-            <option value="name">Name</option>
+            {/* <option value="name">Name</option> */}
             <option value="id">ID</option>
           </Form.Control>
           <FormControl
+            id="searchValue"
             placeholder=" "
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            value={formik.values.searchValue}
+            onChange={formik.handleChange}
           />
         </InputGroup>
       </Form>

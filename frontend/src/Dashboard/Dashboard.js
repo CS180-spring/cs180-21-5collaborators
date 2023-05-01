@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Search from "../components/Search";
@@ -7,6 +8,18 @@ import Table from "../components/Table";
 const Dashboard = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+
+  const formik = useFormik({
+    initialValues: {
+      searchBy: "",
+      searchValue: "",
+    },
+    onSubmit: (e) => handleSubmit(e),
+  });
+
+  const handleSubmit = (e) => {
+    console.log(e);
+  };
 
   useEffect(() => {
     fetchData();
@@ -19,16 +32,19 @@ const Dashboard = () => {
     setFilteredData(response.data);
   };
 
-  const handleSearch = (searchBy, searchTerm) => {
-    const results = data.filter((item) => {
-      if (searchBy === "name") {
-        return item.name.toLowerCase().includes(searchTerm.toLowerCase());
-      } else {
-        return item.id.toString().includes(searchTerm);
+  useEffect(() => {
+    const searchData = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://127.0.0.1:3000/getInfo?id=${formik.values.searchValue}`
+        );
+        setFilteredData(data);
+      } catch (error) {
+        console.log(error);
       }
-    });
-    setFilteredData(results);
-  };
+    };
+    searchData();
+  }, [formik.values.searchValue]);
 
   const handleAdd = () => {
     console.log("Add new item");
@@ -53,7 +69,7 @@ const Dashboard = () => {
   return (
     <>
       <Header onAdd={handleAdd} onReload={handleReload} />
-      <Search onSearch={handleSearch} />
+      <Search formik={formik} />
       <Table
         data={filteredData}
         onView={handleView}
