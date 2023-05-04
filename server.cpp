@@ -37,6 +37,38 @@ public:
         , noShow(noShow) {};
 };
 
+//generate unique ID
+// Global counter variable to generate unique IDs
+int idCounter = 0;
+
+// Function to generate unique IDs
+string generateID() {
+    idCounter++;
+    return "P" + to_string(idCounter);
+}
+
+// Function to create a new patient file
+void createPatientFile(string name, int age, string gender, string address, string phone) {
+    // Generate a new unique ID for the patient
+    string patientID = generateID();
+
+    // Create a file with the patient's ID as the filename
+    ofstream patientFile(patientID + ".txt");
+
+    // Write the patient information to the file
+    patientFile << "ID: " << patientID << endl;
+    patientFile << "Name: " << name << endl;
+    patientFile << "Age: " << age << endl;
+    patientFile << "Gender: " << gender << endl;
+    patientFile << "Address: " << address << endl;
+    patientFile << "Phone: " << phone << endl;
+
+    // Close the file
+    patientFile.close();
+
+    cout << "Patient file created: " << patientID << ".txt" << endl;
+}
+
 int main()
 {
 
