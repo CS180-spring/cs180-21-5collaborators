@@ -1,3 +1,4 @@
+//code samples to help create project from crow repo
 #define CROW_ENABLE_CORS
 #include <iostream>
 #include <crow.h>
@@ -8,6 +9,7 @@
 #include <vector>
 #include "rapidjson/document.h"
 #include "crow/middlewares/cors.h"
+
 
 //#include "crow_all.h"
 
@@ -39,7 +41,9 @@ public:
 
 int main()
 {
-
+    std::string path2Patient = "";
+    std::cout << "Insert path to database" << std::endl;
+    getline(std::cin,path2Patient);
     crow::App<crow::CORSHandler> app;
 
     // Customize CORS
@@ -58,10 +62,9 @@ int main()
 
 
     std::unordered_map<int, Patient> patients;
-   // crow::SimpleApp app;
-    //tst
+   
 
-    std::string path2Patient = "/Users/jonassegundo/Desktop/180DB/test.json";
+    //std::string path2Patient = "/Users/jonassegundo/Desktop/180DB/test.json";
     std::ifstream myFile(path2Patient);
     std::ostringstream tmp;
     tmp << myFile.rdbuf();
@@ -70,7 +73,7 @@ int main()
     crow::json::wvalue json(jsonLoad);
 
 
-    //tst
+    
     for (unsigned i = 0; i < json.size(); i++) {
         crow::json::wvalue pat = json[i];
         //tst
@@ -192,8 +195,6 @@ int main()
             scholarship, hypertension, diabetes, alcoholism, handicap, smsReceived, noShow);
         patients.insert(std::make_pair(id, t));
     }
-
-    //tst
 
 
      //params
@@ -373,6 +374,44 @@ int main()
 
     res.write("Hello, World!");
     res.code = 200;
+    return res;
+            });
+    
+    CROW_ROUTE(app, "/random20")
+        .methods("GET"_method)
+        ([&patients](const crow::request& req) {
+        crow::response res;
+            
+
+    // Set CORS headers
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_header("Access-Control-Allow-Methods", "GET");
+            res.set_header("Access-Control-Allow-Headers", "Content-Type");
+            crow::json::wvalue x;
+            int numPat = 20;
+            if(patients.size() < 20){
+                numPat = patients.size();
+            }
+            for(unsigned i = 0; i < numPat;i++){
+                auto per = patients.find(rand()%patients.size());
+                x[i]["PatientId"] = per->second.id;
+                x[i]["PatientName"] = per->second.name;
+                x[i]["AppointmentID"] = per->second.appointmentId;
+                x[i]["Gender"] = per->second.gender;
+                x[i]["ScheduledDay"] = per->second.scheduledDay;
+                x[i]["AppointmentDay"] = per->second.appointmentDay;
+                x[i]["Age"] = per->second.age;
+                x[i]["Neighbourhood"] = per->second.neighbourhood;
+                x[i]["Scholarship"] = per->second.scholarship ? 1 : 0;
+                x[i]["Hipertension"] = per->second.hypertension ? 1 : 0;
+                x[i]["Diabetes"] = per->second.diabetes ? 1 : 0;
+                x[i]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
+                x[i]["Handcap"] = per->second.handicap ? 1 : 0;
+                x[i]["SMS_received"] = per->second.smsReceived ? 1 : 0;
+                x[i]["No-show"] = per->second.noShow;
+            }
+            res.write(x.dump());
+    
     return res;
             });
     
