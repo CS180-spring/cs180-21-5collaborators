@@ -82,6 +82,10 @@ function Dashboard() {
 }
 
 const DisplayInfo = ({ info }) => {
+  if (info.error === "No patient found") {
+    return <div>No patient found</div>;
+  }
+
   const data = [
     { field: 'Patient ID', value: info.PatientId },
     { field: 'Patient Name', value: info.PatientName },
