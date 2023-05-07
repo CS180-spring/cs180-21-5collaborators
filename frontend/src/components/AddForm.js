@@ -1,29 +1,37 @@
 // AddForm.js
 import React, { useState } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+import { Dropdown } from "primereact/dropdown";
+import { Calendar } from "primereact/calendar";
+import { Checkbox } from "primereact/checkbox";
 
 const AddForm = ({ show, handleClose }) => {
   const [formData, setFormData] = useState({
-    id: "",
     name: "",
-    appointment_id: "",
-    gender: "",
-    scheduled_date: "",
-    appointment_date: "",
     age: "",
+    gender: null,
     neighborhood: "",
+    appointment_id: "",
+    appointment_date: null,
+    scheduled_date: null,
     scholarship: false,
-    hypertension: false,
-    diabetes: false,
     alcoholism: false,
     handicap: false,
+    hypertension: false,
+    diabetes: false,
     sms_received: false,
     no_show: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const genders = [
+    { label: "Male", value: "M" },
+    { label: "Female", value: "F" },
+  ];
+
+  const handleGenderChange = (e) => {
+    setFormData({ ...formData, gender: e.value });
   };
 
   const handleSubmit = (e) => {
@@ -33,189 +41,160 @@ const AddForm = ({ show, handleClose }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Add New Appointment</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          {/* Add form fields for each data field here */}
-          {/* Example: */}
-          <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
+    <Dialog visible={show} onHide={handleClose} header="Add New Appointment">
+      <form onSubmit={handleSubmit}>
+        <div className="p-fluid">
+          <div className="p-field">
+            <label htmlFor="name">Patient Name</label>
+            <InputText
+              id="name"
               name="name"
               value={formData.name}
-              onChange={handleChange}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
             />
-          </Form.Group>
-          <Form.Group controlId="appointment_id">
-            <Form.Label>Appointment ID</Form.Label>
-            <Form.Control
-              type="text"
-              name="appointment_id"
-              value={formData.appointment_id}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group controlId="gender">
-            <Form.Label>Gender</Form.Label>
-            <Form.Control
-              as="select"
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-            </Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="scheduled_date">
-            <Form.Label>Scheduled Date</Form.Label>
-            <Form.Control
-              type="date"
-              name="scheduled_date"
-              value={formData.scheduled_date}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group controlId="appointment_date">
-            <Form.Label>Appointment Date</Form.Label>
-            <Form.Control
-              type="date"
-              name="appointment_date"
-              value={formData.appointment_date}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group controlId="age">
-            <Form.Label>Age</Form.Label>
-            <Form.Control
-              type="number"
+          </div>
+          <div className="p-field">
+            <label htmlFor="age">Age</label>
+            <InputText
+              id="age"
               name="age"
               value={formData.age}
-              onChange={handleChange}
+              onChange={(e) => setFormData({ ...formData, age: e.target.value })}
               required
             />
-          </Form.Group>
-
-          <Form.Group controlId="neighborhood">
-            <Form.Label>Neighborhood</Form.Label>
-            <Form.Control
-              type="text"
+          </div>
+          <div className="p-field">
+            <label htmlFor="gender">Gender</label>
+            <Dropdown
+              id="gender"
+              name="gender"
+              options={genders}
+              value={formData.gender}
+              onChange={handleGenderChange}
+              placeholder="Select"
+              required
+            />
+          </div>
+          <div className="p-field">
+            <label htmlFor="neighborhood">Neighborhood</label>
+            <InputText
+              id="neighborhood"
               name="neighborhood"
               value={formData.neighborhood}
-              onChange={handleChange}
+              onChange={(e) => setFormData({ ...formData, neighborhood: e.target.value })}
               required
             />
-          </Form.Group>
-
-          <Form.Group controlId="scholarship">
-            <Form.Check
-              type="checkbox"
-              name="scholarship"
-              label="Scholarship"
-              checked={formData.scholarship}
-              onChange={(e) =>
-                setFormData({ ...formData, scholarship: e.target.checked })
-              }
-            />
-          </Form.Group>
-
-          <Form.Group controlId="hypertension">
-            <Form.Check
-              type="checkbox"
-              name="hypertension"
-              label="Hypertension"
-              checked={formData.hypertension}
-              onChange={(e) =>
-                setFormData({ ...formData, hypertension: e.target.checked })
-              }
-            />
-          </Form.Group>
-
-          <Form.Group controlId="diabetes">
-            <Form.Check
-              type="checkbox"
-              name="diabetes"
-              label="Diabetes"
-              checked={formData.diabetes}
-              onChange={(e) =>
-                setFormData({ ...formData, diabetes: e.target.checked })
-              }
-            />
-          </Form.Group>
-
-          <Form.Group controlId="alcoholism">
-            <Form.Check
-              type="checkbox"
-              name="alcoholism"
-              label="Alcoholism"
-              checked={formData.alcoholism}
-              onChange={(e) =>
-                setFormData({ ...formData, alcoholism: e.target.checked })
-              }
-            />
-          </Form.Group>
-
-          <Form.Group controlId="handicap">
-            <Form.Check
-              type="checkbox"
-              name="handicap"
-              label="Handicap"
-              checked={formData.handicap}
-              onChange={(e) =>
-                setFormData({ ...formData, handicap: e.target.checked })
-              }
-            />
-          </Form.Group>
-
-          <Form.Group controlId="sms_received">
-            <Form.Check
-              type="checkbox"
-              name="sms_received"
-              label="SMS Received"
-              checked={formData.sms_received}
-              onChange={(e) =>
-                setFormData({ ...formData, sms_received: e.target.checked })
-              }
-            />
-          </Form.Group>
-
-          <Form.Group controlId="no_show">
-            <Form.Label>No-Show</Form.Label>
-            <Form.Control
-              as="select"
-              name="no_show"
-              value={formData.no_show}
-              onChange={handleChange}
+          </div>
+          <div className="p-field">
+            <label htmlFor="appointment_id">Appointment ID</label>
+            <InputText
+              id="appointment_id"
+              name="appointment_id"
+              value={formData.appointment_id}
+              onChange={(e) => setFormData({ ...formData, appointment_id: e.target.value })}
               required
-            >
-              <option value="">Select</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </Form.Control>
-          </Form.Group>
-          {/* Add remaining form fields */}
-
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </Modal.Body>
-    </Modal>
-  );
-};
-
-export default AddForm;
+            />
+          </div>
+          <div className="p-field">
+            <label htmlFor="appointment_date">Appointment Date</label>
+            <Calendar
+              id="appointment_date"
+              name="appointment_date"
+              value={formData.appointment_date}
+              onChange={(e) => setFormData({ ...formData, appointment_date: e.value })}
+              required
+            />
+          </div>
+          <div className="p-field">
+            <label htmlFor="scheduled_date">Scheduled Date</label>
+            <Calendar
+                            id="scheduled_date"
+                            name="scheduled_date"
+                            value={formData.scheduled_date}
+                            onChange={(e) => setFormData({ ...formData, scheduled_date: e.value })}
+                            required
+                          />
+                        </div>
+                        <div className="p-field">
+                          <Checkbox
+                            inputId="scholarship"
+                            name="scholarship"
+                            checked={formData.scholarship}
+                            onChange={(e) => setFormData({ ...formData, scholarship: e.checked })}
+                          />
+                          <label htmlFor="scholarship">Scholarship</label>
+                        </div>
+                        <div className="p-field">
+                          <Checkbox
+                            inputId="alcoholism"
+                            name="alcoholism"
+                            checked={formData.alcoholism}
+                            onChange={(e) => setFormData({ ...formData, alcoholism: e.checked })}
+                          />
+                          <label htmlFor="alcoholism">Alcoholism</label>
+                        </div>
+                        <div className="p-field">
+                          <Checkbox
+                            inputId="handicap"
+                            name="handicap"
+                            checked={formData.handicap}
+                            onChange={(e) => setFormData({ ...formData, handicap: e.checked })}
+                          />
+                          <label htmlFor="handicap">Handicap</label>
+                        </div>
+                        <div className="p-field">
+                          <Checkbox
+                            inputId="hypertension"
+                            name="hypertension"
+                            checked={formData.hypertension}
+                            onChange={(e) => setFormData({ ...formData, hypertension: e.checked })}
+                          />
+                          <label htmlFor="hypertension">Hypertension</label>
+                        </div>
+                        <div className="p-field">
+                          <Checkbox
+                            inputId="diabetes"
+                            name="diabetes"
+                            checked={formData.diabetes}
+                            onChange={(e) => setFormData({ ...formData, diabetes: e.checked })}
+                          />
+                          <label htmlFor="diabetes">Diabetes</label>
+                        </div>
+                        <div className="p-field">
+                          <Checkbox
+                            inputId="sms_received"
+                            name="sms_received"
+                            checked={formData.sms_received}
+                            onChange={(e) => setFormData({ ...formData, sms_received: e.checked })}
+                          />
+                          <label htmlFor="sms_received">SMS Received</label>
+                        </div>
+                        <div className="p-field">
+                          <label htmlFor="no_show">No-Show</label>
+                          <Dropdown
+                            id="no_show"
+                            name="no_show"
+                            options={[
+                              { label: "Yes", value: "yes" },
+                              { label: "No", value: "no" },
+                            ]}
+                            value={formData.no_show}
+                            onChange={(e) => setFormData({ ...formData, no_show: e.value })}
+                            placeholder="Select"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="p-dialog-footer">
+                        <Button label="Submit" icon="pi pi-check" className="p-button-success" />
+                        <Button label="Cancel" icon="pi pi-times" className="p-button-secondary" onClick={handleClose} />
+                      </div>
+                    </form>
+                  </Dialog>
+                );
+              };
+              
+              export default AddForm;
+              
+             
