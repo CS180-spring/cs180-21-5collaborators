@@ -9,10 +9,13 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import Header from "../components/Header";
+import Random20Table from "../components/Random20Table";
+import UpdatePatientModal from "../components/UpdatePatientModal";
 
 function Dashboard() {
   const [id, setId] = useState('');
   const [info, setInfo] = useState(null);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
@@ -22,28 +25,58 @@ function Dashboard() {
     setInfo(data);
   };
 
-  const handleUpdate = async () => {
-    const newInfo = {};
-    newInfo.name = prompt('Enter new name:', info.name);
-    newInfo.age = prompt('Enter new age:', info.age);
-    newInfo.appointID = prompt('Enter new appointment ID:', info.appointID);
-    newInfo.gender = prompt('Enter new gender (M/F):', info.gender);
-    newInfo.sched = prompt('Enter new schedule (1/2/3):', info.sched);
-    newInfo.appDay = prompt('Enter new appointment day (1/2/3):', info.appDay);
-    newInfo.neigh = prompt('Enter new neighborhood:', info.neigh);
-    newInfo.scholar = prompt('Enter new scholar status (0/1):', info.scholar);
-    newInfo.hyperTen = prompt('Enter new hypertension status (0/1):', info.hyperTen);
-    newInfo.diabet = prompt('Enter new diabetes status (0/1):', info.diabet);
-    newInfo.alch = prompt('Enter new alcoholism status (0/1):', info.alch);
-    newInfo.handi = prompt('Enter new disability status (0/1):', info.handi);
-    newInfo.sms = prompt('Enter new SMS reminder status (0/1):', info.sms);
-    newInfo.ns = prompt('Enter new notification status (yes/no):', info.ns);
-
-    const response = await fetch(`http://0.0.0.0:3000/updatePatient?newName=${newInfo.name}&newAge=${newInfo.age}&id=${id}&newAppointID=${newInfo.appointID}&newGend=${newInfo.gender}&newSched=${newInfo.sched}&newAppDay=${newInfo.appDay}&newNeigh=${newInfo.neigh}&scholar=${newInfo.scholar}&hyperTen=${newInfo.hyperTen}&diabet=${newInfo.diabet}&alch=${newInfo.alch}&handi=${newInfo.handi}&sms=${newInfo.sms}&ns=${newInfo.ns}`);
-    const data = await response.json();
-    setInfo(data);
-    setUpdateSuccess(true);
+  const handleUpdate = async (updatedInfo) => {
+    const {
+      PatientId,
+      PatientName,
+      Age,
+      AppointmentID,
+      Gender,
+      ScheduledDay,
+      AppointmentDay,
+      Neighbourhood,
+      Scholarship,
+      Hipertension,
+      Diabetes,
+      Alcoholism,
+      Handcap,
+      SMS_received,
+      'No-show': NoShow,
+    } = updatedInfo;
+  
+    const queryString = new URLSearchParams({
+      newName: PatientName,
+      newAge: Age,
+      id: PatientId,
+      newAppointID: AppointmentID,
+      newGend: Gender,
+      newSched: ScheduledDay,
+      newAppDay: AppointmentDay,
+      newNeigh: Neighbourhood,
+      scholar: Scholarship,
+      hyperTen: Hipertension,
+      diabet: Diabetes,
+      alch: Alcoholism,
+      handi: Handcap,
+      sms: SMS_received,
+      ns: NoShow,
+    }).toString();
+  
+    try {
+      const response = await fetch(`http://0.0.0.0:3000/updatePatient?${queryString}`);
+      
+      if (response.ok) {
+        // Refresh the data or update the state with the new patient info
+        console.log('Patient information updated successfully');
+      } else {
+        console.error('Failed to update patient information');
+      }
+    } catch (error) {
+      console.error('Error updating patient information:', error);
+    }
   };
+  
+
   
   const handleDelete = async () => {
     const response = await fetch(`http://0.0.0.0:3000/deletePatient?id=${id}`);
@@ -63,7 +96,7 @@ function Dashboard() {
   return (
     <div className="Dashboard">
       <Header onAdd={handleAdd} onReload={handleReload} />
-      <h2>Search by ID</h2>
+      <h2>Search Patient by ID</h2>
       <div className="p-inputgroup">
         <InputText value={id} onChange={(e) => setId(e.target.value)} placeholder="Enter ID" />
         <Button label="Search" onClick={handleSearch} />
@@ -73,13 +106,22 @@ function Dashboard() {
       {deleteSuccess && <p style={{ color: 'green' }}>Patient record deleted successfully.</p>}
       {info && (
         <div className="p-inputgroup">
-          <Button label="Update" onClick={handleUpdate} />
+          <Button label="Update" onClick={() => setShowUpdateModal(true)} />
           <Button label="Delete" onClick={handleDelete} className="p-button-danger" />
         </div>
       )}
+      <UpdatePatientModal
+        info={info}
+        visible={showUpdateModal}
+        onHide={() => setShowUpdateModal(false)}
+        onSubmit={handleUpdate}
+      />
+      {/*Random20Table component */}
+      <h2>Random 20 Patients</h2>
+      <Random20Table />
     </div>
   );
-}
+};
 
 const DisplayInfo = ({ info }) => {
   if (info.error === "No patient found") {
@@ -105,7 +147,7 @@ const DisplayInfo = ({ info }) => {
   ];
 
   return (
-    <Card title="Information">
+    <Card title="Patient Information">
       <DataTable value={data}>
         <Column field="field" header="Field" />
         <Column field="value" header="Value" />
