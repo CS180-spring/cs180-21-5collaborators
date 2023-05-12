@@ -4,13 +4,13 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 
-const Random20Table = () => {
+const Last20Table = () => {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [dialogVisible, setDialogVisible] = useState(false);
 
   useEffect(() => {
-    fetch("http://0.0.0.0:3000/random20")
+    fetch("http://0.0.0.0:3000/last20")
       .then((response) => response.json())
       .then((data) => setPatients(data));
   }, []);
@@ -74,5 +74,5 @@ const Random20Table = () => {
     </div>
   );
 }
-export default Random20Table;
+export default Last20Table;
 
