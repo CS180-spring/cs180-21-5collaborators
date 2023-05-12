@@ -9,7 +9,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import Header from "../components/Header";
-import Random20Table from "../components/Random20Table";
+import Last20Table from "../components/Last20Table";
 import UpdatePatientModal from "../components/UpdatePatientModal";
 
 function Dashboard() {
@@ -96,7 +96,7 @@ function Dashboard() {
   return (
     <div className="Dashboard">
       <Header onAdd={handleAdd} onReload={handleReload} />
-      <h2>Search Patient by ID</h2>
+      <h3>Search Patient by ID</h3>
       <div className="p-inputgroup">
         <InputText value={id} onChange={(e) => setId(e.target.value)} placeholder="Enter ID" />
         <Button label="Search" onClick={handleSearch} />
@@ -116,9 +116,9 @@ function Dashboard() {
         onHide={() => setShowUpdateModal(false)}
         onSubmit={handleUpdate}
       />
-      {/*Random20Table component */}
-      <h2>Random 20 Patients</h2>
-      <Random20Table />
+      {/*recent20Table component */}
+      <h3>Recently added patients</h3>
+      <Last20Table />
     </div>
   );
 };
