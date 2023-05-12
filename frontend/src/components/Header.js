@@ -9,7 +9,6 @@ const Header = () => {
   const [showAddForm, setShowAddForm] = useState(false);
 
   const handleLogout = () => {
-    // Redirect to login or home page
     window.location.href = "/login";
   };
 
@@ -27,8 +26,8 @@ const Header = () => {
         <Navbar.Brand href="#home">
           <img
             src={Logo}
-            width="178"
-            height="30"
+            width="174"
+            height="80"
             className="d-inline-block align-top"
             alt="React logo"
           />
