@@ -460,7 +460,7 @@ int main()
     
     return res;
             });
-        CROW_ROUTE(app, "/last20")
+         CROW_ROUTE(app, "/last20")
         .methods("GET"_method)
         ([&patients](const crow::request& req) {
         crow::response res;
@@ -475,24 +475,25 @@ int main()
             if(patients.size() < 20){
                 numPat = patients.size();
             }
-            for(unsigned i = 1; i <= numPat;i++){
-                auto per = patients.find(patients.size()-i);
-                x[i]["PatientId"] = per->second.id;
-                x[i]["PatientName"] = per->second.name;
-                x[i]["AppointmentID"] = per->second.appointmentId;
-                x[i]["Gender"] = per->second.gender;
-                x[i]["ScheduledDay"] = per->second.scheduledDay;
-                x[i]["AppointmentDay"] = per->second.appointmentDay;
-                x[i]["Age"] = per->second.age;
-                x[i]["Neighbourhood"] = per->second.neighbourhood;
-                x[i]["Scholarship"] = per->second.scholarship ? 1 : 0;
-                x[i]["Hipertension"] = per->second.hypertension ? 1 : 0;
-                x[i]["Diabetes"] = per->second.diabetes ? 1 : 0;
-                x[i]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
-                x[i]["Handcap"] = per->second.handicap ? 1 : 0;
-                x[i]["SMS_received"] = per->second.smsReceived ? 1 : 0;
-                x[i]["No-show"] = per->second.noShow;
+            for(unsigned i = 0; i < numPat;i++){
+                auto per = *patients.find(patients.size()-i);
+                x[i]["PatientId"] = per.second.id;
+                x[i]["PatientName"] = per.second.name;
+                x[i]["AppointmentID"] = per.second.appointmentId;
+                x[i]["Gender"] = per.second.gender;
+                x[i]["ScheduledDay"] = per.second.scheduledDay;
+                x[i]["AppointmentDay"] = per.second.appointmentDay;
+                x[i]["Age"] = per.second.age;
+                x[i]["Neighbourhood"] = per.second.neighbourhood;
+                x[i]["Scholarship"] = per.second.scholarship ? 1 : 0;
+                x[i]["Hipertension"] = per.second.hypertension ? 1 : 0;
+                x[i]["Diabetes"] = per.second.diabetes ? 1 : 0;
+                x[i]["Alcoholism"] = per.second.alcoholism ? 1 : 0;
+                x[i]["Handcap"] = per.second.handicap ? 1 : 0;
+                x[i]["SMS_received"] = per.second.smsReceived ? 1 : 0;
+                x[i]["No-show"] = per.second.noShow;
             }
+            std::cout << x.size() << std::endl;
             res.write(x.dump());
     
     return res;
