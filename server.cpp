@@ -499,6 +499,73 @@ int main()
     return res;
             });
     
+    CROW_ROUTE(app, "/addPatient")
+        ([&patients, &params2](const crow::request& req) {
+        crow::json::wvalue x;
+    auto updates = req.raw_url;
+
+    for (unsigned i = 0; i < params2.size(); i++) {
+        if (updates.find(params2[i]) == std::string::npos) {
+            std::string miss = params2[i];
+            x["error"] = "Missing parameter: "+miss;
+            return x;
+        }
+    }
+
+    //get said parameters
+    auto getUpdates = req.url_params;
+    std::string updateName = getUpdates.get(params2[0]);
+    int updateAge = atoi(getUpdates.get(params2[1]));
+    int aID = atoi(getUpdates.get(params2[2]));
+    std::string upGen = getUpdates.get(params2[3]);
+    std::string upSched = getUpdates.get(params2[4]);
+    std::string upADay = getUpdates.get(params2[5]);
+    std::string upNeigh = getUpdates.get(params2[6]);
+    bool schol = atoi(getUpdates.get(params2[7]));
+    bool hyp = atoi(getUpdates.get(params2[8]));
+    bool dia = atoi(getUpdates.get(params2[9]));
+    bool alc = atoi(getUpdates.get(params2[10]));
+    bool han = atoi(getUpdates.get(params2[11]));
+    bool sms = atoi(getUpdates.get(params2[12]));
+    std::string ns = getUpdates.get(params2[13]);
+
+    //get from list;
+        Patient i;
+        i.id = patients.size()+1;
+        i.name = updateName;
+        i.age = updateAge;
+        i.appointmentId = aID;
+        i.gender = upGen;
+        i.scheduledDay = upSched;
+        i.appointmentDay = upADay;
+        i.neighbourhood = upNeigh;
+        i.scholarship = schol;
+        i.hypertension = hyp;
+        i.diabetes = dia;
+        i.alcoholism = alc;
+        i.handicap = han;
+        i.smsReceived = sms;
+        i.noShow = ns;
+        patients.insert(std::make_pair(i.id, i));
+    x["PatientId"] = i.id;
+    x["PatientName"] = i.name;
+    x["AppointmentID"] = i.appointmentId;
+    x["Gender"] = i.gender;
+    x["ScheduledDay"] = i.scheduledDay;
+    x["AppointmentDay"] = i.appointmentDay;
+    x["Age"] = i.age;
+    x["Neighbourhood"] = i.neighbourhood;
+    x["Scholarship"] = i.scholarship ? 1 : 0;
+    x["Hipertension"] = i.hypertension ? 1 : 0;
+    x["Diabetes"] = i.diabetes ? 1 : 0;
+    x["Alcoholism"] = i.alcoholism ? 1 : 0;
+    x["Handcap"] = i.handicap ? 1 : 0;
+    x["SMS_received"] = i.smsReceived ? 1 : 0;
+    x["No-show"] = i.noShow;
+
+    return x;
+            });
+    
     app.port(3000).multithreaded().run();
 }
 
