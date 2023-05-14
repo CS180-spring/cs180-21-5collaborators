@@ -453,6 +453,23 @@ int main()
     return res;
             });
     
+
+
+    std::vector<std::string> params2;
+    params2.push_back("newName");
+    params2.push_back("newAge");
+    params2.push_back("newAppointID");
+    params2.push_back("newGend");
+    params2.push_back("newSched");
+    params2.push_back("newAppDay");
+    params2.push_back("newNeigh");
+    params2.push_back("scholar");
+    params2.push_back("hyperTen");
+    params2.push_back("diabet");
+    params2.push_back("alch");
+    params2.push_back("handi");
+    params2.push_back("sms");
+    params2.push_back("ns");
     CROW_ROUTE(app, "/addPatient")
         ([&patients, &params2](const crow::request& req) {
         crow::json::wvalue x;
