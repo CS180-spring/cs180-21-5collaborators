@@ -86,9 +86,29 @@ function Dashboard() {
     setDeleteSuccess(true);
   };  
 
-  const handleAdd = () => {
-    console.log("Add new item");
+  const handleAdd = async (patient) => {
+    const params = new URLSearchParams({
+      newName: patient.PatientName,
+      newAge: patient.Age,
+      newAppointID: patient.AppointmentID,
+      newGend: patient.Gender,
+      newSched: patient.ScheduledDay,
+      newAppDay: patient.AppointmentDay,
+      newNeigh: patient.Neighbourhood,
+      scholar: patient.Scholarship,
+      hyperTen: patient.Hipertension,
+      diabet: patient.Diabetes,
+      alch: patient.Alcoholism,
+      handi: patient.Handcap,
+      sms: patient.SMS_received,
+      ns: patient['No-show'],
+    });
+  
+    const response = await fetch(`http://0.0.0.0:3000/addPatient?${params}`);
+    const data = await response.json();
+    console.log('Output:', data);
   };
+  
 
   const handleReload = () => {
   };
@@ -119,6 +139,7 @@ function Dashboard() {
       {/*recent20Table component */}
       <h3>Recently added patients</h3>
       <Last20Table />
+      <Header onAdd={handleAdd} onReload={handleReload} />
     </div>
   );
 };

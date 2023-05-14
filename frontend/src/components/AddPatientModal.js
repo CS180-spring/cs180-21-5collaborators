@@ -1,36 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 
-const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
-  const getInitialInfo = () => {
-    return info || {
-      PatientId: '',
-      PatientName: '',
-      Age: '',
-      Gender: '',
-      Neighbourhood: '',
-      AppointmentID: '',
-      AppointmentDay: '',
-      ScheduledDay: '',
-      Scholarship: '',
-      Alcoholism: '',
-      Handcap: '',
-      Hipertension: '',
-      Diabetes: '',
-      SMS_received: '',
-      'No-show': '',
-    };
+const AddPatientModal = ({ visible, onHide, onAdd }) => {
+  const emptyPatient = {
+    PatientName: '',
+    Age: '',
+    AppointmentID: '',
+    Gender: '',
+    ScheduledDay: '',
+    AppointmentDay: '',
+    Neighbourhood: '',
+    Scholarship: '',
+    Hipertension: '',
+    Diabetes: '',
+    Alcoholism: '',
+    Handcap: '',
+    SMS_received: '',
+    'No-show': '',
   };
 
-  const [updatedInfo, setUpdatedInfo] = useState(getInitialInfo());
-
-  useEffect(() => {
-    setUpdatedInfo(getInitialInfo());
-  }, [info]);
+  const [newPatient, setNewPatient] = useState(emptyPatient);
 
   const genderOptions = [
     { label: 'M', value: 'M' },
@@ -43,33 +36,34 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
   ];
 
   const handleInputChange = (e, field) => {
-    setUpdatedInfo({ ...updatedInfo, [field]: e.target.value });
+    setNewPatient({ ...newPatient, [field]: e.target.value });
   };
 
   const handleDropdownChange = (e, field) => {
-    setUpdatedInfo({ ...updatedInfo, [field]: e.value });
+    setNewPatient({ ...newPatient, [field]: e.value });
   };
 
   const handleNumberChange = (e, field) => {
-    setUpdatedInfo({ ...updatedInfo, [field]: e.value });
+    setNewPatient({ ...newPatient, [field]: e.value });
   };
 
   const handleSubmit = () => {
-    onSubmit(updatedInfo);
+    onAdd(newPatient);
+    setNewPatient(emptyPatient);
   };
 
   const renderFooter = () => {
     return (
       <div>
         <Button label="Cancel" icon="pi pi-times" onClick={onHide} />
-        <Button label="Save" icon="pi pi-check" onClick={handleSubmit} />
+        <Button label="Add" icon="pi pi-check" onClick={handleSubmit} />
       </div>
     );
   };
 
   return (
     <Dialog
-      header="Update Patient Information"
+      header="Add Patient"
       visible={visible}
       onHide={onHide}
       footer={renderFooter()}
@@ -80,7 +74,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
           <label htmlFor="patientName">Patient Name</label>
           <InputText
             id="patientName"
-            value={updatedInfo.PatientName}
+            value={newPatient.PatientName}
             onChange={(e) => handleInputChange(e, 'PatientName')}
           />
         </div>
@@ -88,7 +82,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
           <label htmlFor="age">Age</label>
           <InputNumber
             id="age"
-            value={updatedInfo.Age}
+            value={newPatient.Age}
             onValueChange={(e) => handleNumberChange(e, 'Age')}
             integeronly
           />
@@ -97,7 +91,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
           <label htmlFor="gender">Gender</label>
           <Dropdown
             id="gender"
-            value={updatedInfo.Gender}
+            value={newPatient.Gender}
             options={genderOptions}
             onChange={(e) => handleDropdownChange(e, 'Gender')}
           />
@@ -106,7 +100,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
           <label htmlFor="neighbourhood">Neighbourhood</label>
           <InputText
             id="neighbourhood"
-            value={updatedInfo.Neighbourhood}
+            value={newPatient.Neighbourhood}
             onChange={(e) => handleInputChange(e, 'Neighbourhood')}
             />
             </div>
@@ -114,7 +108,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="appointmentID">Appointment ID</label>
               <InputText
                 id="appointmentID"
-                value={updatedInfo.AppointmentID}
+                value={newPatient.AppointmentID}
                 onChange={(e) => handleInputChange(e, 'AppointmentID')}
               />
             </div>
@@ -122,7 +116,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="appointmentDay">Appointment Day</label>
               <InputText
                 id="appointmentDay"
-                value={updatedInfo.AppointmentDay}
+                value={newPatient.AppointmentDay}
                 onChange={(e) => handleInputChange(e, 'AppointmentDay')}
               />
             </div>
@@ -130,7 +124,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="scheduledDay">Scheduled Day</label>
               <InputText
                 id="scheduledDay"
-                value={updatedInfo.ScheduledDay}
+                value={newPatient.ScheduledDay}
                 onChange={(e) => handleInputChange(e, 'ScheduledDay')}
               />
             </div>
@@ -138,7 +132,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="scholarship">Scholarship</label>
               <InputNumber
                 id="scholarship"
-                value={updatedInfo.Scholarship}
+                value={newPatient.Scholarship}
                 onValueChange={(e) => handleNumberChange(e, 'Scholarship')}
                 integeronly
               />
@@ -147,7 +141,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="alcoholism">Alcoholism</label>
               <InputNumber
                 id="alcoholism"
-                value={updatedInfo.Alcoholism}
+                value={newPatient.Alcoholism}
                 onValueChange={(e) => handleNumberChange(e, 'Alcoholism')}
                 integeronly
               />
@@ -156,7 +150,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="handcap">Handcap</label>
               <InputNumber
                 id="handcap"
-                value={updatedInfo.Handcap}
+                value={newPatient.Handcap}
                 onValueChange={(e) => handleNumberChange(e, 'Handcap')}
                 integeronly
               />
@@ -165,7 +159,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="hipertension">Hipertension</label>
               <InputNumber
                 id="hipertension"
-                value={updatedInfo.Hipertension}
+                value={newPatient.Hipertension}
                 onValueChange={(e) => handleNumberChange(e, 'Hipertension')}
                 integeronly
               />
@@ -174,7 +168,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="diabetes">Diabetes</label>
               <InputNumber
                 id="diabetes"
-                value={updatedInfo.Diabetes}
+                value={newPatient.Diabetes}
                 onValueChange={(e) => handleNumberChange(e, 'Diabetes')}
                 integeronly
               />
@@ -183,7 +177,7 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="smsReceived">SMS Received</label>
               <InputNumber
                 id="smsReceived"
-                value={updatedInfo.SMS_received}
+                value={newPatient.SMS_received}
                 onValueChange={(e) => handleNumberChange(e, 'SMS_received')}
                 integeronly
               />
@@ -192,15 +186,14 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
               <label htmlFor="noShow">No-show</label>
               <Dropdown
                 id="noShow"
-                value={updatedInfo['No-show']}
+                value={newPatient['No-show']}
                 options={yesNoOptions}
                 onChange={(e) => handleDropdownChange(e, 'No-show')}
               />
             </div>
           </div>
-        </Dialog>
-      );
-    };
-    
-    export default UpdatePatientModal;
-    
+    </Dialog>
+  );
+};
+
+export default AddPatientModal;
