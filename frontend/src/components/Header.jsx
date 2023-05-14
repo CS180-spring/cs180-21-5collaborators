@@ -3,9 +3,9 @@ import { Navbar, Nav } from "react-bootstrap";
 import Logo from "../logo.png";
 import { useState } from "react";
 import { FaPlus, FaSync, FaSignOutAlt } from "react-icons/fa";
-import AddForm from "./AddForm";
+import AddPatient from "./AddPatient";
 
-const Header = () => {
+const Header = ({ onAdd, onReload }) => {
   const [showAddForm, setShowAddForm] = useState(false);
 
   const handleLogout = () => {
@@ -38,7 +38,7 @@ const Header = () => {
             <Nav.Link onClick={handleAddNew} className="btn btn-primary mr-4">
               <FaPlus className="mr-1" /> Add New
             </Nav.Link>
-            <Nav.Link href="#reload" className="btn btn-success mr-4">
+            <Nav.Link href="#reload" className="btn btn-success mr-4" onClick={onReload}>
               <FaSync className="mr-1" /> Reload
             </Nav.Link>
             <Nav.Link onClick={handleLogout} className="btn btn-danger">
@@ -47,7 +47,11 @@ const Header = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AddForm show={showAddForm} handleClose={handleCloseAddForm} />
+      <AddPatient
+        visible={showAddForm}
+        onHide={handleCloseAddForm}
+        onAdd={onAdd}
+      />
     </>
   );
 };

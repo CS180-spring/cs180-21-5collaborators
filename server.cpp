@@ -39,52 +39,6 @@ public:
         , noShow(noShow) {};
 };
 
-//generate unique ID
-// Global counter variable to generate unique IDs
-int idCounter = 0;
-
-// Function to generate unique IDs
-string generateID() {
-    idCounter++;
-    return "P" + to_string(idCounter);
-}
-
-// Function to create a new patient file
-void createPatientFile(int id, std::string name, int appointmentId, std::string gender, std::string scheduledDay, std::string appointmentDay, int age,
-        std::string neighbourhood, bool scholarship, bool hypertension, bool diabetes, bool alcoholism, bool handicap, bool smsReceived, std::string noShow) : id(id), name(name),
-        appointmentId(appointmentId), gender(gender), scheduledDay(scheduledDay), appointmentDay(appointmentDay), age(age), neighbourhood(neighbourhood)
-        , scholarship(scholarship), hypertension(hypertension), diabetes(diabetes), alcoholism(alcoholism), handicap(handicap), smsReceived(smsReceived)
-        , noShow(noShow) {
-    // Generate a new unique ID for the patient
-    int id = generateID();
-
-    // Create a file with the patient's ID as the filename
-    ofstream patientFile(id + ".txt");
-
-    // Write the patient information to the file
-    patientFile << "ID: " << id << endl;
-    patientFile << "Name: " << name << endl;
-    patientFile << "Appointment ID: " << appointmentID << endl;
-    patientFile << "Gender: " << gender << endl;
-    patientFile << "Scheduled Day: " << scheduledDay << endl;
-    patientFile << "Appointment Day: " << appointmentDay << endl;
-    patientFile << "Age: " << age << endl;
-    patientFile << "Neighbourhood: " << neighbourhood << endl;
-    patientFile << "Scholarship: " << scholarship << endl;
-    patientFile << "Hypertension: " << hypertension << endl; 
-    patientFile << "Diabetes: " << diabetes << endl;
-    patientFile << "Alcoholism: " << alcoholism << endl;
-    patientFile << "Handicap: " << handicap << endl;
-    patientFile << "Sms Received: " << smsReceived << endl;
-    patientFile << "No Show: " << noShow << endl;
-    
-
-    // Close the file
-    patientFile.close();
-
-    cout << "Patient file created: " << patientID << ".txt" << endl;
-}
-
 int main()
 {
     std::string path2Patient = "";
@@ -503,6 +457,23 @@ int main()
     return res;
             });
     
+
+
+    std::vector<std::string> params2;
+    params2.push_back("newName");
+    params2.push_back("newAge");
+    params2.push_back("newAppointID");
+    params2.push_back("newGend");
+    params2.push_back("newSched");
+    params2.push_back("newAppDay");
+    params2.push_back("newNeigh");
+    params2.push_back("scholar");
+    params2.push_back("hyperTen");
+    params2.push_back("diabet");
+    params2.push_back("alch");
+    params2.push_back("handi");
+    params2.push_back("sms");
+    params2.push_back("ns");
     CROW_ROUTE(app, "/addPatient")
         ([&patients, &params2](const crow::request& req) {
         crow::json::wvalue x;
