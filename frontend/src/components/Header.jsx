@@ -3,7 +3,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import Logo from "../logo.png";
 import { useState } from "react";
 import { FaPlus, FaSync, FaSignOutAlt } from "react-icons/fa";
-import AddPatientModal from "./AddPatientModal";
+import AddPatient from "./AddPatient";
 
 const Header = ({ onAdd, onReload }) => {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -47,7 +47,7 @@ const Header = ({ onAdd, onReload }) => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AddPatientModal
+      <AddPatient
         visible={showAddForm}
         onHide={handleCloseAddForm}
         onAdd={onAdd}

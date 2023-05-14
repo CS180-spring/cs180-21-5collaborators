@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 
-const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
+const UpdatePatient = ({ info, visible, onHide, onSubmit }) => {
   const getInitialInfo = () => {
     return info || {
       PatientId: '',
@@ -202,5 +202,5 @@ const UpdatePatientModal = ({ info, visible, onHide, onSubmit }) => {
       );
     };
     
-    export default UpdatePatientModal;
+    export default UpdatePatient;
     

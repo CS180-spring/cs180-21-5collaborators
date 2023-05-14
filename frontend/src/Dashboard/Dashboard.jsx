@@ -10,12 +10,12 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import Header from "../components/Header";
 import Last20Table from "../components/Last20Table";
-import UpdatePatientModal from "../components/UpdatePatientModal";
+import UpdatePatient from "../components/UpdatePatient";
 
 function Dashboard() {
   const [id, setId] = useState('');
   const [info, setInfo] = useState(null);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
@@ -126,20 +126,19 @@ function Dashboard() {
       {deleteSuccess && <p style={{ color: 'green' }}>Patient record deleted successfully.</p>}
       {info && (
         <div className="p-inputgroup">
-          <Button label="Update" onClick={() => setShowUpdateModal(true)} />
+          <Button label="Update" onClick={() => setShowUpdate(true)} />
           <Button label="Delete" onClick={handleDelete} className="p-button-danger" />
         </div>
       )}
-      <UpdatePatientModal
+      <UpdatePatient
         info={info}
-        visible={showUpdateModal}
-        onHide={() => setShowUpdateModal(false)}
+        visible={showUpdate}
+        onHide={() => setShowUpdate(false)}
         onSubmit={handleUpdate}
       />
       {/*recent20Table component */}
       <h3>Recently added patients</h3>
       <Last20Table />
-      <Header onAdd={handleAdd} onReload={handleReload} />
     </div>
   );
 };
