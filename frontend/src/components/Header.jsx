@@ -30,11 +30,9 @@ const Header = ({ onAdd, onReload }) => {
   };
 
   const handleReload = () => {
-    // Update the URL to http://0.0.0.0:3000/last20
     axios.get('http://0.0.0.0:3000/last20')
       .then(response => {
         console.log(response);
-        // Handle the reload logic or update the state in the parent component
         onReload();
       })
       .catch(error => {
