@@ -7,7 +7,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Checkbox } from "primereact/checkbox";
 import { Calendar } from "primereact/calendar";
 
-const AddPatientModal = ({ visible, onHide, onAdd }) => {
+const AddPatient = ({ visible, onHide, onAdd }) => {
   const emptyPatient = {
     PatientName: "",
     Age: "",
@@ -50,9 +50,18 @@ const AddPatientModal = ({ visible, onHide, onAdd }) => {
   };
 
   const handleSubmit = () => {
-    onAdd(newPatient);
-    setNewPatient(emptyPatient);
+    const nonCheckboxFields = ["PatientName", "Age", "AppointmentID", "Gender", "ScheduledDay", 
+                              "AppointmentDay", "Neighbourhood", "No-show"];
+    const allFilled = nonCheckboxFields.every(field => newPatient[field] !== null && newPatient[field] !== '');
+  
+    if(allFilled) {
+      onAdd(newPatient);
+      setNewPatient(emptyPatient);
+    } else {
+      alert('Please fill in all fields.');
+    }
   };
+  
 
   const renderFooter = () => {
     return (
@@ -216,4 +225,4 @@ const AddPatientModal = ({ visible, onHide, onAdd }) => {
   );
 };
 
-export default AddPatientModal;
+export default AddPatient;
