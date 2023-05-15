@@ -4,12 +4,21 @@ import Logo from "../logo.png";
 import { useState } from "react";
 import { FaPlus, FaSync, FaSignOutAlt } from "react-icons/fa";
 import AddPatient from "./AddPatient";
+import axios from 'axios';
 
 const Header = ({ onAdd, onReload }) => {
   const [showAddForm, setShowAddForm] = useState(false);
 
   const handleLogout = () => {
-    window.location.href = "/login";
+    axios.get('http://0.0.0.0:3000/logout')
+      .then(response => {
+        console.log(response);
+        //redirect to the login page
+        window.location.href = "/login";
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   const handleAddNew = () => {
