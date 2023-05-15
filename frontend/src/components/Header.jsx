@@ -13,7 +13,7 @@ const Header = ({ onAdd, onReload }) => {
     axios.get('http://0.0.0.0:3000/logout')
       .then(response => {
         console.log(response);
-        //redirect to the login page
+        // redirect to the login page
         window.location.href = "/login";
       })
       .catch(error => {
@@ -27,6 +27,19 @@ const Header = ({ onAdd, onReload }) => {
 
   const handleCloseAddForm = () => {
     setShowAddForm(false);
+  };
+
+  const handleReload = () => {
+    // Update the URL to http://0.0.0.0:3000/last20
+    axios.get('http://0.0.0.0:3000/last20')
+      .then(response => {
+        console.log(response);
+        // Handle the reload logic or update the state in the parent component
+        onReload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -47,7 +60,7 @@ const Header = ({ onAdd, onReload }) => {
             <Nav.Link onClick={handleAddNew} className="btn btn-primary mr-4">
               <FaPlus className="mr-1" /> Add New
             </Nav.Link>
-            <Nav.Link href="#reload" className="btn btn-success mr-4" onClick={onReload}>
+            <Nav.Link href="#reload" className="btn btn-success mr-4" onClick={handleReload}>
               <FaSync className="mr-1" /> Reload
             </Nav.Link>
             <Nav.Link onClick={handleLogout} className="btn btn-danger">
