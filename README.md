@@ -5,20 +5,20 @@ Our project will be a document data storage software focused on patient informat
 # Progress
 Currently the list of completed features for our project are as follows:
 
-## Create a Patient Information File
-The software has the ability to create a new patient information file and add it to the database.
-
-## Update a Patient Information File
-The software can find a patient information file in the database and allow edits to be made to the file before saving it back to the database.
-
-## Read a Patient Information File
-The software can find a patient information file and display the contents of it which include information about the specific individual.
-
-## Delete a Patient Information File
-The software can delete a patient information file located in the database.
+## CRUD Functionality with Patient Information Files
+* The software has the ability to create a new patient information file and add it to the database.
+* The software can find a patient information file in the database and allow edits to be made to the file before saving it back to the database.
+* The software can find a patient information file and display the contents of it which include information about the specific individual.
+* The software can delete a patient information file located in the database.
 
 ## Search For a Patient Information File Using an ID
 Every patient information file in the database has a uniquely generated ID which can be used to search. If the searched ID is found in the database the user will be able to view the contents of the patient information file.
+
+## Automatic Query of 20 Most Recently Added Patients
+The software will automatically display the 20 most recently added patient information files in the database.
+
+## Log In System
+The software allows users the ability to log in before having access to the software's functionality .
 
 ## Front-End/Back-End Connection
 For our back-end we are using C++ and for our front-end we are using React and basic HTML, CSS, JSX. We are using Crow as a midware connection between our back-end code and the front-end interface. We have been able to establish the connection between the two ends and requests to the back-end from our front-end are working.
