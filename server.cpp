@@ -48,30 +48,30 @@ public:
      * This is the least flexible implementation but the fastest and easiest to perform operations on.
      * You'd need to change the constructor to push the value passed in the constructor to the below vector for this implementation.
     */
-    std::vector<int> appointments_ints;
+    std::vector<int> appointments_int;
 
     /**addAppointment: Adds a new appointment.*/
-    void addAppointment_Ints(int id){
-        appointments_ints.push_back(id);
+    void addAppointment_Int(int id){
+        appointments_int.push_back(id);
     }
 
     /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector of ints.
      * Returns all the values if you ask for too many of them.
     */
-    std::vector<int>* getRecentAppointments_Ints(int numberToGet){
+    std::vector<int>* getRecentAppointments_Int(int numberToGet){
         std::vector<int>* temp;
 
-        if (numberToGet <= appointments_ints.size()){
+        if (numberToGet <= appointments_int.size()){
             int index = 1;
             
             while (index < numberToGet){
-                temp->push_back(appointments_ints[appointments_ints.size() - index]);
+                temp->push_back(appointments_int[appointments_int.size() - index]);
                 ++index;
             }
 
             return temp;
         } else {
-            foreach (int item : appointments){
+            for (int item : appointments_int){
                 temp->push_back(item);
             }
 
@@ -80,8 +80,8 @@ public:
     }
 
     /**deleteAppointment: Delete an appointment at a given index.*/
-    void deleteAppointment(int index){
-        appointments_ints.erase(index);
+    void deleteAppointment_Int(int index){
+        appointments_int.erase(index);
     }
 
     /**Implementation 2: Very long string with a separator
@@ -93,14 +93,14 @@ public:
     /**addAppointment: Adds a new appointment.
      * This appends a new appointment string followed by the separator character.
     */
-    void addAppointment_string(std::string appointment){
+    void addAppointment_String(std::string appointment){
         appointments_string += appointment + separator;
     }
 
     /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector of strings.
      * Returns all the values if you ask for too many of them.
     */
-    std::vector<std::string>* getRecentAppointments_string(int numberToGet){
+    std::vector<std::string>* getRecentAppointments_String(int numberToGet){
         std::stringstream ss(appointments_string);
         std::vector<std::string>* temp;
 
@@ -127,11 +127,40 @@ public:
     /**addAppointment: Adds a new appointment.
      * Takes in 3 fields. 
     */
-    void addAppointment_struct(std::string info, int aptId, bool ns){
+    void addAppointment_Struct(std::string info, int aptId, bool ns){
         Appointment a;
         a.information = info;
         a.id = aptId;
         a.noShow = ns;
+    }
+
+    /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector of Appointment structs.
+     * Returns all the values if you ask for too many of them.
+    */
+    std::vector<Appointment>* getRecentAppointments_Struct(int numberToGet){
+        std::vector<Appointment>* temp;
+
+        if (numberToGet <= appointments_int.size()){
+            int index = 1;
+            
+            while (index < numberToGet){
+                temp->push_back(appointments_int[appointments_int.size() - index]);
+                ++index;
+            }
+
+            return temp;
+        } else {
+            for (Appointment item : appointments_int){
+                temp->push_back(item);
+            }
+
+            return temp;
+        }
+    }
+
+    /**deleteAppointment: Delete an appointment at a given index.*/
+    void deleteAppointment_Struct(int index){
+        appointments_struct.erase(index);
     }
 };
 
