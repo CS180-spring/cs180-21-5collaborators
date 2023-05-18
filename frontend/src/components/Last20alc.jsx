@@ -4,13 +4,13 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 
-const Last20 = () => {
+const Last20alc = () => {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [dialogVisible, setDialogVisible] = useState(false);
 
   useEffect(() => {
-    fetch("http://0.0.0.0:3000/last20")
+    fetch("http://0.0.0.0:3000/last20Alc")
       .then((response) => response.json())
       .then((data) => setPatients(data));
   }, []);

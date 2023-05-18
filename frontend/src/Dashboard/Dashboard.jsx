@@ -10,6 +10,7 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import Header from "../components/Header";
 import Last20Table from "../components/Last20Table";
+import Last20alc from '../components/Last20alc';
 import UpdatePatient from "../components/UpdatePatient";
 
 function Dashboard() {
@@ -139,6 +140,8 @@ function Dashboard() {
       {/*recent20Table component */}
       <h3>Recently added patients</h3>
       <Last20Table />
+      <h3>Alcohol addiction </h3>
+      <Last20alc />
     </div>
   );
 };
