@@ -1,38 +1,40 @@
-import React, { useState } from 'react';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { InputNumber } from 'primereact/inputnumber';
+import React, { useState } from "react";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { Dropdown } from "primereact/dropdown";
+import { InputNumber } from "primereact/inputnumber";
+import { Checkbox } from "primereact/checkbox";
+import { Calendar } from "primereact/calendar";
 
-const AddPatientModal = ({ visible, onHide, onAdd }) => {
+const AddPatient = ({ visible, onHide, onAdd }) => {
   const emptyPatient = {
-    PatientName: '',
-    Age: '',
-    AppointmentID: '',
-    Gender: '',
-    ScheduledDay: '',
-    AppointmentDay: '',
-    Neighbourhood: '',
-    Scholarship: '',
-    Hipertension: '',
-    Diabetes: '',
-    Alcoholism: '',
-    Handcap: '',
-    SMS_received: '',
-    'No-show': '',
+    PatientName: "",
+    Age: "",
+    AppointmentID: "",
+    Gender: "",
+    ScheduledDay: "",
+    AppointmentDay: "",
+    Neighbourhood: "",
+    Scholarship: "",
+    Hipertension: "",
+    Diabetes: "",
+    Alcoholism: "",
+    Handcap: "",
+    SMS_received: "",
+    "No-show": "",
   };
 
   const [newPatient, setNewPatient] = useState(emptyPatient);
 
   const genderOptions = [
-    { label: 'M', value: 'M' },
-    { label: 'F', value: 'F' },
+    { label: "M", value: "M" },
+    { label: "F", value: "F" },
   ];
 
   const yesNoOptions = [
-    { label: 'Yes', value: 'Yes' },
-    { label: 'No', value: 'No' },
+    { label: "Yes", value: "Yes" },
+    { label: "No", value: "No" },
   ];
 
   const handleInputChange = (e, field) => {
@@ -48,9 +50,18 @@ const AddPatientModal = ({ visible, onHide, onAdd }) => {
   };
 
   const handleSubmit = () => {
-    onAdd(newPatient);
-    setNewPatient(emptyPatient);
+    const nonCheckboxFields = ["PatientName", "Age", "AppointmentID", "Gender", "ScheduledDay", 
+                              "AppointmentDay", "Neighbourhood", "No-show"];
+    const allFilled = nonCheckboxFields.every(field => newPatient[field] !== null && newPatient[field] !== '');
+  
+    if(allFilled) {
+      onAdd(newPatient);
+      setNewPatient(emptyPatient);
+    } else {
+      alert('Please fill in all fields.');
+    }
   };
+  
 
   const renderFooter = () => {
     return (
@@ -67,7 +78,7 @@ const AddPatientModal = ({ visible, onHide, onAdd }) => {
       visible={visible}
       onHide={onHide}
       footer={renderFooter()}
-      style={{ width: '50vw' }}
+      style={{ width: "50vw" }}
     >
       <div className="p-fluid">
         <div className="p-field">
@@ -75,7 +86,7 @@ const AddPatientModal = ({ visible, onHide, onAdd }) => {
           <InputText
             id="patientName"
             value={newPatient.PatientName}
-            onChange={(e) => handleInputChange(e, 'PatientName')}
+            onChange={(e) => handleInputChange(e, "PatientName")}
           />
         </div>
         <div className="p-field">
@@ -83,7 +94,7 @@ const AddPatientModal = ({ visible, onHide, onAdd }) => {
           <InputNumber
             id="age"
             value={newPatient.Age}
-            onValueChange={(e) => handleNumberChange(e, 'Age')}
+            onValueChange={(e) => handleNumberChange(e, "Age")}
             integeronly
           />
         </div>
@@ -93,7 +104,7 @@ const AddPatientModal = ({ visible, onHide, onAdd }) => {
             id="gender"
             value={newPatient.Gender}
             options={genderOptions}
-            onChange={(e) => handleDropdownChange(e, 'Gender')}
+            onChange={(e) => handleDropdownChange(e, "Gender")}
           />
         </div>
         <div className="p-field">
@@ -101,99 +112,117 @@ const AddPatientModal = ({ visible, onHide, onAdd }) => {
           <InputText
             id="neighbourhood"
             value={newPatient.Neighbourhood}
-            onChange={(e) => handleInputChange(e, 'Neighbourhood')}
-            />
-            </div>
-            <div className="p-field">
-              <label htmlFor="appointmentID">Appointment ID</label>
-              <InputText
-                id="appointmentID"
-                value={newPatient.AppointmentID}
-                onChange={(e) => handleInputChange(e, 'AppointmentID')}
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="appointmentDay">Appointment Day</label>
-              <InputText
-                id="appointmentDay"
-                value={newPatient.AppointmentDay}
-                onChange={(e) => handleInputChange(e, 'AppointmentDay')}
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="scheduledDay">Scheduled Day</label>
-              <InputText
-                id="scheduledDay"
-                value={newPatient.ScheduledDay}
-                onChange={(e) => handleInputChange(e, 'ScheduledDay')}
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="scholarship">Scholarship</label>
-              <InputNumber
-                id="scholarship"
-                value={newPatient.Scholarship}
-                onValueChange={(e) => handleNumberChange(e, 'Scholarship')}
-                integeronly
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="alcoholism">Alcoholism</label>
-              <InputNumber
-                id="alcoholism"
-                value={newPatient.Alcoholism}
-                onValueChange={(e) => handleNumberChange(e, 'Alcoholism')}
-                integeronly
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="handcap">Handcap</label>
-              <InputNumber
-                id="handcap"
-                value={newPatient.Handcap}
-                onValueChange={(e) => handleNumberChange(e, 'Handcap')}
-                integeronly
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="hipertension">Hipertension</label>
-              <InputNumber
-                id="hipertension"
-                value={newPatient.Hipertension}
-                onValueChange={(e) => handleNumberChange(e, 'Hipertension')}
-                integeronly
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="diabetes">Diabetes</label>
-              <InputNumber
-                id="diabetes"
-                value={newPatient.Diabetes}
-                onValueChange={(e) => handleNumberChange(e, 'Diabetes')}
-                integeronly
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="smsReceived">SMS Received</label>
-              <InputNumber
-                id="smsReceived"
-                value={newPatient.SMS_received}
-                onValueChange={(e) => handleNumberChange(e, 'SMS_received')}
-                integeronly
-              />
-            </div>
-            <div className="p-field">
-              <label htmlFor="noShow">No-show</label>
-              <Dropdown
-                id="noShow"
-                value={newPatient['No-show']}
-                options={yesNoOptions}
-                onChange={(e) => handleDropdownChange(e, 'No-show')}
-              />
-            </div>
-          </div>
+            onChange={(e) => handleInputChange(e, "Neighbourhood")}
+          />
+        </div>
+        <div className="p-field">
+          <label htmlFor="appointmentID">Appointment ID</label>
+          <InputText
+            id="appointmentID"
+            value={newPatient.AppointmentID}
+            onChange={(e) => handleInputChange(e, "AppointmentID")}
+          />
+        </div>
+        <div className="p-field">
+          <label htmlFor="appointmentDay">Appointment Day</label>
+          <Calendar
+            id="appointmentDay"
+            value={
+              newPatient.AppointmentDay
+                ? new Date(newPatient.AppointmentDay)
+                : null
+            }
+            onChange={(e) => handleInputChange(e, "AppointmentDay")}
+            dateFormat="yy-mm-dd"
+            showIcon
+          />
+        </div>
+        <div className="p-field">
+          <label htmlFor="scheduledDay">Scheduled Day</label>
+          <Calendar
+            id="scheduledDay"
+            value={
+              newPatient.ScheduledDay ? new Date(newPatient.ScheduledDay) : null
+            }
+            onChange={(e) => handleInputChange(e, "ScheduledDay")}
+            dateFormat="yy-mm-dd"
+            showIcon
+          />
+        </div>
+        <div className="p-field">
+          <label htmlFor="scholarship">Scholarship</label>
+          <Checkbox
+            id="scholarship"
+            checked={newPatient.Scholarship === 1}
+            onChange={(e) =>
+              setNewPatient({ ...newPatient, Scholarship: e.checked ? 1 : 0 })
+            }
+          />
+        </div>
+        <div className="p-field">
+          <label htmlFor="alcoholism">Alcoholism</label>
+          <Checkbox
+            id="alcoholism"
+            checked={newPatient.Alcoholism === 1}
+            onChange={(e) =>
+              setNewPatient({ ...newPatient, Alcoholism: e.checked ? 1 : 0 })
+            }
+          />
+        </div>
+        <div className="p-field">
+          <label htmlFor="handcap">Handcap</label>
+          <Checkbox
+            id="handcap"
+            checked={newPatient.Handcap === 1}
+            onChange={(e) =>
+              setNewPatient({ ...newPatient, Handcap: e.checked ? 1 : 0 })
+            }
+          />
+        </div>
+        <div className="p-field">
+          <label htmlFor="hipertension">Hipertension</label>
+          <Checkbox
+            id="hipertension"
+            checked={newPatient.Hipertension === 1}
+            onChange={(e) =>
+              setNewPatient({ ...newPatient, Hipertension: e.checked ? 1 : 0 })
+            }
+          />
+        </div>
+        <div className="p-field">
+          <label htmlFor="diabetes">Diabetes</label>
+          <Checkbox
+            id="diabetes"
+            checked={newPatient.Diabetes === 1}
+            onChange={(e) =>
+              setNewPatient({ ...newPatient, Diabetes: e.checked ? 1 : 0 })
+            }
+          />
+        </div>
+
+        <div className="p-field">
+          <label htmlFor="smsReceived">SMS Received</label>
+          <Checkbox
+            id="smsReceived"
+            checked={newPatient.SMS_received === 1}
+            onChange={(e) =>
+              setNewPatient({ ...newPatient, SMS_received: e.checked ? 1 : 0 })
+            }
+          />
+        </div>
+
+        <div className="p-field">
+          <label htmlFor="noShow">No-show</label>
+          <Dropdown
+            id="noShow"
+            value={newPatient["No-show"]}
+            options={yesNoOptions}
+            onChange={(e) => handleDropdownChange(e, "No-show")}
+          />
+        </div>
+      </div>
     </Dialog>
   );
 };
 
-export default AddPatientModal;
+export default AddPatient;

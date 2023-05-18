@@ -4,12 +4,21 @@ import Logo from "../logo.png";
 import { useState } from "react";
 import { FaPlus, FaSync, FaSignOutAlt } from "react-icons/fa";
 import AddPatient from "./AddPatient";
+import axios from 'axios';
 
 const Header = ({ onAdd, onReload }) => {
   const [showAddForm, setShowAddForm] = useState(false);
 
   const handleLogout = () => {
-    window.location.href = "/login";
+    axios.get('http://0.0.0.0:3000/logout')
+      .then(response => {
+        console.log(response);
+        // redirect to the login page
+        window.location.href = "/login";
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   const handleAddNew = () => {
@@ -18,6 +27,17 @@ const Header = ({ onAdd, onReload }) => {
 
   const handleCloseAddForm = () => {
     setShowAddForm(false);
+  };
+
+  const handleReload = () => {
+    axios.get('http://0.0.0.0:3000/last20')
+      .then(response => {
+        console.log(response);
+        onReload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -38,7 +58,7 @@ const Header = ({ onAdd, onReload }) => {
             <Nav.Link onClick={handleAddNew} className="btn btn-primary mr-4">
               <FaPlus className="mr-1" /> Add New
             </Nav.Link>
-            <Nav.Link href="#reload" className="btn btn-success mr-4" onClick={onReload}>
+            <Nav.Link href="#reload" className="btn btn-success mr-4" onClick={handleReload}>
               <FaSync className="mr-1" /> Reload
             </Nav.Link>
             <Nav.Link onClick={handleLogout} className="btn btn-danger">
