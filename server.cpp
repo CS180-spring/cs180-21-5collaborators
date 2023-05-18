@@ -62,10 +62,10 @@ public:
         std::vector<int>* temp;
 
         if (numberToGet <= appointments_ints.size()){
-            int index = 0;
+            int index = 1;
             
             while (index < numberToGet){
-                temp->push_back(appointments_ints[appointments_ints.size() - remaining]);
+                temp->push_back(appointments_ints[appointments_ints.size() - index]);
                 ++index;
             }
 
@@ -113,11 +113,25 @@ public:
         return temp;
     }
 
-    /**Implementation 3: Appointment struct*/
+    /**Implementation 3: Appointment struct
+     * I'm not sure which fields we would want here, so I'm just guessing.
+    */
     struct Appointment{
         std::string information;
         int id;
         bool noShow;
+    }
+
+    std::vector<Appointment> appointments_struct;
+
+    /**addAppointment: Adds a new appointment.
+     * Takes in 3 fields. 
+    */
+    void addAppointment_struct(std::string info, int aptId, bool ns){
+        Appointment a;
+        a.information = info;
+        a.id = aptId;
+        a.noShow = ns;
     }
 };
 
