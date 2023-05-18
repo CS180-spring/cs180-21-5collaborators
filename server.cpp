@@ -84,17 +84,17 @@ public:
         appointments_int.erase(index);
     }
 
-    /**Implementation 2: Very long string with a separator
+    /**Implementation 2: Very long string with a delimiter
      * This makes deletion very difficult, but we don't really need to do that. We're just keeping a forever-record.
     */
     std::string appointments_string = "";
-    const std::string separator = "|";      // This is used to separate the different appointments in the string. You should disallow this from being inputted in the frontend. This character is also flexible, you could change it if you wish.
+    const std::string delimiter = "|";      // This is used to separate the different appointments in the string. You should disallow this from being inputted in the frontend. This character is also flexible, you could change it if you wish.
 
     /**addAppointment: Adds a new appointment.
-     * This appends a new appointment string followed by the separator character.
+     * This appends a new appointment string followed by the delimiter character.
     */
     void addAppointment_String(std::string appointment){
-        appointments_string += appointment + separator;
+        appointments_string += appointment + delimiter;
     }
 
     /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector of strings.
@@ -105,10 +105,13 @@ public:
         std::vector<std::string>* temp;
         int remaining = numberToGet;
 
+        // skip over the first entry since the last character will be the delimiter
+        std::string substring;
+        getline(ss, substring, delimiter);
+
         while(ss.good() && remaining > 0){   
             // get next substring of appointments until separator is seen     
-            std::string substring;
-            getline(ss, substring, separator);
+            getline(ss, substring, delimiter);
             temp->push_back(substring.reverse(substring.begin(), substring.end()));
 
             // decrement the remaining count
