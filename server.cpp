@@ -46,11 +46,11 @@ public:
      * This is the least flexible implementation but the fastest and easiest to perform operations on.
      * You'd need to change the constructor to push a new value for this implementation.
     */
-    std::vector<int> appointments;
+    std::vector<int> appointments_ints;
 
     /**AddAppointment: Adds a new appointment.*/
     void AddAppointment(int id){
-        appointments.push_back(id);
+        appointments_ints.push_back(id);
     }
 
     /**GetRecentAppointments: Gets the x most recent appointments as a pointer to an array.
@@ -59,11 +59,11 @@ public:
     std::vector<int>* GetRecentAppointments(int numberToGet){
         std::vector<int>* temp;
 
-        if (numberToGet <= appointments.size()){
+        if (numberToGet <= appointments_ints.size()){
             int index = 0;
             
             while (index < numberToGet){
-                temp->push_back(appointments[appointments.size() - remaining]);
+                temp->push_back(appointments_ints[appointments_ints.size() - remaining]);
                 ++index;
             }
 
@@ -79,13 +79,13 @@ public:
 
     /**DeleteAppointment: Delete an appointment at a given index.*/
     void DeleteAppointment(int index){
-        appointments.erase(index);
+        appointments_ints.erase(index);
     }
 
     /**Implementation 2: Very long string with a separator
      * This makes deletion very difficult, but we don't really need to do that. We're just keeping a forever-record.
     */
-
+    std::string appointments_string;
 
     /**Implementation 3: Appointment struct*/
 };
