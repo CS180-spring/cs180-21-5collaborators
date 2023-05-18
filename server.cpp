@@ -101,7 +101,7 @@ public:
      * Returns all the values if you ask for too many of them.
     */
     std::vector<std::string>* getRecentAppointments_String(int numberToGet){
-        std::stringstream ss(appointments_string);
+        std::stringstream ss(appointments_string.reverse(appointments_string.begin(), appointments_string.end()));
         std::vector<std::string>* temp;
         int remaining = numberToGet;
 
@@ -109,7 +109,7 @@ public:
             // get next substring of appointments until separator is seen     
             std::string substring;
             getline(ss, substring, separator);
-            temp->push_back(substring);
+            temp->push_back(substring.reverse(substring.begin(), substring.end()));
 
             // decrement the remaining count
             --remaining;
