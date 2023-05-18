@@ -43,6 +43,7 @@ public:
     /**Here, I wrote a couple implementations for how we'd append new appointments to a patient. I'm not sure if they'll be useful - delete them if they're not. I'm just trying to do something.*/
 
     /**Implementation 1: Integer vector of appointments
+     * This is the least flexible implementation but the fastest and easiest to perform operations on.
      * You'd need to change the constructor to push a new value for this implementation.
     */
     std::vector<int> appointments;
@@ -52,12 +53,23 @@ public:
         appointments.push_back(id);
     }
 
-    /**Gets the x most recent appointments.*/
-    int GetRecentAppointments(int numberToGet){
-        
+    /**GetRecentAppointments: Gets the x most recent appointments.*/
+    std::vector<int> GetRecentAppointments(int numberToGet){
+        if (numberToGet <= appointments.size()){
+
+        }
     }
 
-    /**Implementation 2: Very long string with a separator*/
+    /**DeleteAppointment: Delete an appointment at a given index.*/
+    void DeleteAppointment(int index){
+        appointments.erase(index);
+    }
+
+    /**Implementation 2: Very long string with a separator
+     * This makes deletion very difficult, but we don't really need to do that. We're just keeping a forever-record.
+    */
+
+
     /**Implementation 3: Appointment struct*/
 };
 
