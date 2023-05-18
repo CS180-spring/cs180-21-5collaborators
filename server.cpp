@@ -39,6 +39,26 @@ public:
         , scholarship(scholarship), hypertension(hypertension), diabetes(diabetes), alcoholism(alcoholism), handicap(handicap), smsReceived(smsReceived)
         , noShow(noShow) {};
     Patient(){};
+
+    /**Here, I wrote a couple implementations for how we'd append new appointments to a patient. I'm not sure if they'll be useful - delete them if they're not. I'm just trying to do something.*/
+
+    /**Implementation 1: Integer vector of appointments
+     * You'd need to change the constructor to push a new value for this implementation.
+    */
+    std::vector<int> appointments;
+
+    /**AddAppointment: Adds a new appointment.*/
+    void AddAppointment(int id){
+        appointments.push_back(id);
+    }
+
+    /**Gets the x most recent appointments.*/
+    int GetRecentAppointments(int numberToGet){
+        
+    }
+
+    /**Implementation 2: Very long string with a separator*/
+    /**Implementation 3: Appointment struct*/
 };
 
 int main()
