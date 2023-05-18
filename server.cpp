@@ -50,15 +50,15 @@ public:
     */
     std::vector<int> appointments_ints;
 
-    /**AddAppointment: Adds a new appointment.*/
-    void AddAppointment(int id){
+    /**addAppointment: Adds a new appointment.*/
+    void addAppointment_Ints(int id){
         appointments_ints.push_back(id);
     }
 
-    /**GetRecentAppointments: Gets the x most recent appointments as a pointer to an array.
+    /**getRecentAppointments: Gets the x most recent appointments as a pointer to an array.
      * Returns all the values if you ask for too many of them.
     */
-    std::vector<int>* GetRecentAppointments(int numberToGet){
+    std::vector<int>* getRecentAppointments_Ints(int numberToGet){
         std::vector<int>* temp;
 
         if (numberToGet <= appointments_ints.size()){
@@ -79,8 +79,8 @@ public:
         }
     }
 
-    /**DeleteAppointment: Delete an appointment at a given index.*/
-    void DeleteAppointment(int index){
+    /**deleteAppointment: Delete an appointment at a given index.*/
+    void deleteAppointment(int index){
         appointments_ints.erase(index);
     }
 
@@ -90,11 +90,15 @@ public:
     std::string appointments_string = "";
     const std::string separator = "|";      // This is used to separate the different appointments in the string. You should disallow this from being inputted in the frontend. This character is also flexible, you could change it if you wish.
 
-    /**AddAppointment: Adds a new appointment.
+    /**addAppointment: Adds a new appointment.
      * This appends a new appointment string followed by the separator character.
     */
-    void AddAppointment(std::string appointment){
+    void addAppointment_string(std::string appointment){
         appointments_string += appointment + separator;
+    }
+
+    std::vector<std::string>* getRecentAppointments_string(int numberToGet){
+
     }
 
     /**Implementation 3: Appointment struct*/
