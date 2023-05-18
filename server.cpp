@@ -46,7 +46,7 @@ public:
 
     /**Implementation 1: Integer vector of appointments
      * This is the least flexible implementation but the fastest and easiest to perform operations on.
-     * You'd need to change the constructor to push a new value for this implementation.
+     * You'd need to change the constructor to push the value passed in the constructor to the below vector for this implementation.
     */
     std::vector<int> appointments_ints;
 
@@ -55,7 +55,7 @@ public:
         appointments_ints.push_back(id);
     }
 
-    /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector.
+    /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector of ints.
      * Returns all the values if you ask for too many of them.
     */
     std::vector<int>* getRecentAppointments_Ints(int numberToGet){
@@ -97,7 +97,7 @@ public:
         appointments_string += appointment + separator;
     }
 
-    /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector.
+    /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector of strings.
      * Returns all the values if you ask for too many of them.
     */
     std::vector<std::string>* getRecentAppointments_string(int numberToGet){
