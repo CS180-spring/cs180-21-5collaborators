@@ -103,11 +103,16 @@ public:
     std::vector<std::string>* getRecentAppointments_String(int numberToGet){
         std::stringstream ss(appointments_string);
         std::vector<std::string>* temp;
+        int remaining = numberToGet;
 
-        while(ss.good()){        
+        while(ss.good() && remaining > 0){   
+            // get next substring of appointments until separator is seen     
             std::string substring;
             getline(ss, substring, separator);
             temp->push_back(substring);
+
+            // decrement the remaining count
+            --remaining;
         }
 
         return temp;
