@@ -40,7 +40,9 @@ public:
         , noShow(noShow) {};
     Patient(){};
 
-    /**Here, I wrote a couple implementations for how we'd append new appointments to a patient. I'm not sure if they'll be useful - delete them if they're not. I'm just trying to do something.*/
+    /**Here, I wrote a couple implementations for how we'd append new appointments to a patient. I'm not sure if they'll be useful - delete them if they're not. I'm just trying to do something.
+     * I've named them appointments_ints, appointments_string, and appointments_struct respectively. It's probably better if you rename them back to just "appointments" after picking the most convenient one.
+    */
 
     /**Implementation 1: Integer vector of appointments
      * This is the least flexible implementation but the fastest and easiest to perform operations on.
@@ -85,7 +87,15 @@ public:
     /**Implementation 2: Very long string with a separator
      * This makes deletion very difficult, but we don't really need to do that. We're just keeping a forever-record.
     */
-    std::string appointments_string;
+    std::string appointments_string = "";
+    const std::string separator = "|";      // This is used to separate the different appointments in the string. You should disallow this from being inputted in the frontend. This character is also flexible, you could change it if you wish.
+
+    /**AddAppointment: Adds a new appointment.
+     * This appends a new appointment string followed by the separator character.
+    */
+    void AddAppointment(std::string appointment){
+        appointments_string += appointment + separator;
+    }
 
     /**Implementation 3: Appointment struct*/
 };
