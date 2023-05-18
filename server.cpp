@@ -55,7 +55,7 @@ public:
         appointments_ints.push_back(id);
     }
 
-    /**getRecentAppointments: Gets the x most recent appointments as a pointer to an array.
+    /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector.
      * Returns all the values if you ask for too many of them.
     */
     std::vector<int>* getRecentAppointments_Ints(int numberToGet){
@@ -97,8 +97,20 @@ public:
         appointments_string += appointment + separator;
     }
 
+    /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector.
+     * Returns all the values if you ask for too many of them.
+    */
     std::vector<std::string>* getRecentAppointments_string(int numberToGet){
+        std::stringstream ss(appointments_string);
+        std::vector<std::string>* temp;
 
+        while(ss.good()){        
+            std::string substring;
+            getline(ss, substring, separator);
+            temp->push_back(substring);
+        }
+
+        return temp;
     }
 
     /**Implementation 3: Appointment struct*/
