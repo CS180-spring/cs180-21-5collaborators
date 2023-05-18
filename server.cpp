@@ -53,10 +53,27 @@ public:
         appointments.push_back(id);
     }
 
-    /**GetRecentAppointments: Gets the x most recent appointments.*/
-    std::vector<int> GetRecentAppointments(int numberToGet){
-        if (numberToGet <= appointments.size()){
+    /**GetRecentAppointments: Gets the x most recent appointments as a pointer to an array.
+     * Returns all the values if you ask for too many of them.
+    */
+    std::vector<int>* GetRecentAppointments(int numberToGet){
+        std::vector<int>* temp;
 
+        if (numberToGet <= appointments.size()){
+            int index = 0;
+            
+            while (index < numberToGet){
+                temp->push_back(appointments[appointments.size() - remaining]);
+                ++index;
+            }
+
+            return temp;
+        } else {
+            foreach (int item : appointments){
+                temp->push_back(item);
+            }
+
+            return temp;
         }
     }
 
