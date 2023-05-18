@@ -101,17 +101,19 @@ public:
      * Returns all the values if you ask for too many of them.
     */
     std::vector<std::string>* getRecentAppointments_String(int numberToGet){
+        // reverse the string as we're trying to get the most recent elements
         std::stringstream ss(appointments_string.reverse(appointments_string.begin(), appointments_string.end()));
         std::vector<std::string>* temp;
         int remaining = numberToGet;
 
-        // skip over the first entry since the last character will be the delimiter
+        // skip over the first entry since the last character (and thus character on top) will be the delimiter
         std::string substring;
         getline(ss, substring, delimiter);
 
         while(ss.good() && remaining > 0){   
             // get next substring of appointments until separator is seen     
             getline(ss, substring, delimiter);
+            // un-reverse the substring we're adding
             temp->push_back(substring.reverse(substring.begin(), substring.end()));
 
             // decrement the remaining count
