@@ -114,6 +114,11 @@ public:
     }
 
     /**Implementation 3: Appointment struct*/
+    struct Appointment{
+        std::string information;
+        int id;
+        bool noShow;
+    }
 };
 
 int main()
