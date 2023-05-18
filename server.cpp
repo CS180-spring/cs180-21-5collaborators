@@ -1,4 +1,5 @@
 //code samples to help create project from crow repo
+//problem solving help from chatgpt
 #define CROW_ENABLE_CORS
 #include <iostream>
 #include <crow.h>
@@ -37,6 +38,7 @@ public:
         appointmentId(appointmentId), gender(gender), scheduledDay(scheduledDay), appointmentDay(appointmentDay), age(age), neighbourhood(neighbourhood)
         , scholarship(scholarship), hypertension(hypertension), diabetes(diabetes), alcoholism(alcoholism), handicap(handicap), smsReceived(smsReceived)
         , noShow(noShow) {};
+    Patient(){};
 };
 
 int main()
@@ -61,9 +63,13 @@ int main()
     // clang-format on
 
 
-    std::unordered_map<int, Patient> patients;
-   
-
+    std::map<int, Patient> patients;
+    std::map<int, Patient> diabetics;
+    std::map<int, Patient> hypertensions;
+    std::map<int, Patient> alcholics;
+    std::map<int, Patient> scholars;
+    std::map<int, Patient> handicaps;
+    std::map<int, Patient> highRisk;
     //std::string path2Patient = "/Users/jonassegundo/Desktop/180DB/test.json";
     std::ifstream myFile(path2Patient);
     std::ostringstream tmp;
@@ -194,12 +200,28 @@ int main()
         Patient t = Patient(id, name, appointmentId, gender, scheduledDay, appointmentDay, age, neighbourhood,
             scholarship, hypertension, diabetes, alcoholism, handicap, smsReceived, noShow);
         patients.insert(std::make_pair(id, t));
+        
+        if(t.diabetes){
+            diabetics.insert(std::make_pair(id, t));
+        }
+        if(t.hypertension){
+            hypertensions.insert(std::make_pair(id, t));
+        }
+        if(t.alcoholism){
+            alcholics.insert(std::make_pair(id, t));
+        }
+        if(t.scholarship){
+            scholars.insert(std::make_pair(id, t));
+        }
+        if(t.handicap){
+            handicaps.insert(std::make_pair(id, t));
+        }
     }
 
-
+    int num4ID = patients.size();
      //params
     std::vector<std::string> params;
-
+    std::vector<std::string> params2;
     params.push_back("newName");
     params.push_back("newAge");
     params.push_back("id");
@@ -215,6 +237,21 @@ int main()
     params.push_back("handi");
     params.push_back("sms");
     params.push_back("ns");
+    //addPatient
+    params2.push_back("newName");
+    params2.push_back("newAge");
+    params2.push_back("newAppointID");
+    params2.push_back("newGend");
+    params2.push_back("newSched");
+    params2.push_back("newAppDay");
+    params2.push_back("newNeigh");
+    params2.push_back("scholar");
+    params2.push_back("hyperTen");
+    params2.push_back("diabet");
+    params2.push_back("alch");
+    params2.push_back("handi");
+    params2.push_back("sms");
+    params2.push_back("ns");
     //params.push_back("name");
     CROW_ROUTE(app, "/updatePatient")
         ([&patients, &params](const crow::request& req) {
@@ -334,7 +371,7 @@ int main()
             });
 
     CROW_ROUTE(app, "/deletePatient")
-        ([&patients](const crow::request& req) {
+        ([&patients,&diabetics,&alcholics,&handicaps,&hypertensions,&scholars](const crow::request& req) {
         crow::response res;
         crow::json::wvalue x;
     // Set CORS headers
@@ -353,10 +390,17 @@ int main()
         id = 1;
     }
     auto i = patients.erase(id);
+            
     if(!i){
         x["error"] = "No patient found";
         res.write(x.dump());
+        return res;
     }
+            auto o = diabetics.erase(id);
+            o = alcholics.erase(id);
+            o = handicaps.erase(id);
+            o = scholars.erase(id);
+            o = hypertensions.erase(id);
     res.write("Success!");
     return res;
             });
@@ -414,68 +458,10 @@ int main()
     
     return res;
             });
-         CROW_ROUTE(app, "/last20")
-        .methods("GET"_method)
-        ([&patients](const crow::request& req) {
-        crow::response res;
-            
-
-    // Set CORS headers
-            res.set_header("Access-Control-Allow-Origin", "*");
-            res.set_header("Access-Control-Allow-Methods", "GET");
-            res.set_header("Access-Control-Allow-Headers", "Content-Type");
-            crow::json::wvalue x;
-            int numPat = 20;
-            if(patients.size() < 20){
-                numPat = patients.size();
-            }
-            for(unsigned i = 0; i < numPat;i++){
-                auto per = patients.find(patients.size()-i);
-                if(per == patients.end()){
-                    numPat++;
-                    continue;
-                }
-                x[i]["PatientId"] = per->second.id;
-                x[i]["PatientName"] = per->second.name;
-                x[i]["AppointmentID"] = per->second.appointmentId;
-                x[i]["Gender"] = per->second.gender;
-                x[i]["ScheduledDay"] = per->second.scheduledDay;
-                x[i]["AppointmentDay"] = per->second.appointmentDay;
-                x[i]["Age"] = per->second.age;
-                x[i]["Neighbourhood"] = per->second.neighbourhood;
-                x[i]["Scholarship"] = per->second.scholarship ? 1 : 0;
-                x[i]["Hipertension"] = per->second.hypertension ? 1 : 0;
-                x[i]["Diabetes"] = per->second.diabetes ? 1 : 0;
-                x[i]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
-                x[i]["Handcap"] = per->second.handicap ? 1 : 0;
-                x[i]["SMS_received"] = per->second.smsReceived ? 1 : 0;
-                x[i]["No-show"] = per->second.noShow;
-            }
-            std::cout << x.size() << std::endl;
-            res.write(x.dump());
     
-    return res;
-            });
     
-
-
-    std::vector<std::string> params2;
-    params2.push_back("newName");
-    params2.push_back("newAge");
-    params2.push_back("newAppointID");
-    params2.push_back("newGend");
-    params2.push_back("newSched");
-    params2.push_back("newAppDay");
-    params2.push_back("newNeigh");
-    params2.push_back("scholar");
-    params2.push_back("hyperTen");
-    params2.push_back("diabet");
-    params2.push_back("alch");
-    params2.push_back("handi");
-    params2.push_back("sms");
-    params2.push_back("ns");
     CROW_ROUTE(app, "/addPatient")
-        ([&patients, &params2](const crow::request& req) {
+        ([&patients, &params2,&num4ID](const crow::request& req) {
         crow::json::wvalue x;
     auto updates = req.raw_url;
 
@@ -506,7 +492,8 @@ int main()
 
     //get from list;
         Patient i;
-        i.id = patients.size()+1;
+        i.id = num4ID+1;
+            num4ID++;
         i.name = updateName;
         i.age = updateAge;
         i.appointmentId = aID;
@@ -541,9 +528,303 @@ int main()
     return x;
             });
     
+    CROW_ROUTE(app, "/last20")
+        .methods("GET"_method)
+        ([&patients](const crow::request& req) {
+        crow::response res;
+            
+
+    // Set CORS headers
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_header("Access-Control-Allow-Methods", "GET");
+            res.set_header("Access-Control-Allow-Headers", "Content-Type");
+            crow::json::wvalue x;
+            int numPat = 20;
+            int index = 0;
+            if(patients.size() < 20){
+                numPat = patients.size();
+            }
+            for(auto i = patients.rbegin(); index < numPat; i++){
+                auto per = i;
+                x[index]["PatientId"] = per->second.id;
+                x[index]["PatientName"] = per->second.name;
+                x[index]["AppointmentID"] = per->second.appointmentId;
+                x[index]["Gender"] = per->second.gender;
+                x[index]["ScheduledDay"] = per->second.scheduledDay;
+                x[index]["AppointmentDay"] = per->second.appointmentDay;
+                x[index]["Age"] = per->second.age;
+                x[index]["Neighbourhood"] = per->second.neighbourhood;
+                x[index]["Scholarship"] = per->second.scholarship ? 1 : 0;
+                x[index]["Hipertension"] = per->second.hypertension ? 1 : 0;
+                x[index]["Diabetes"] = per->second.diabetes ? 1 : 0;
+                x[index]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
+                x[index]["Handcap"] = per->second.handicap ? 1 : 0;
+                x[index]["SMS_received"] = per->second.smsReceived ? 1 : 0;
+                x[index]["No-show"] = per->second.noShow;
+                index++;
+            }
+            std::cout << x.size() << std::endl;
+            res.write(x.dump());
+    
+    return res;
+            });
+    
+    
+    CROW_ROUTE(app, "/last20Dia")
+        .methods("GET"_method)
+        ([&diabetics](const crow::request& req) {
+        crow::response res;
+            
+
+    // Set CORS headers
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_header("Access-Control-Allow-Methods", "GET");
+            res.set_header("Access-Control-Allow-Headers", "Content-Type");
+            crow::json::wvalue x;
+            int numPat = 20;
+            int index = 0;
+            if(diabetics.size() < 20){
+                numPat = diabetics.size();
+            }
+            for(auto i = diabetics.rbegin(); index < numPat; i++){
+                auto per = i;
+                x[index]["PatientId"] = per->second.id;
+                x[index]["PatientName"] = per->second.name;
+                x[index]["AppointmentID"] = per->second.appointmentId;
+                x[index]["Gender"] = per->second.gender;
+                x[index]["ScheduledDay"] = per->second.scheduledDay;
+                x[index]["AppointmentDay"] = per->second.appointmentDay;
+                x[index]["Age"] = per->second.age;
+                x[index]["Neighbourhood"] = per->second.neighbourhood;
+                x[index]["Scholarship"] = per->second.scholarship ? 1 : 0;
+                x[index]["Hipertension"] = per->second.hypertension ? 1 : 0;
+                x[index]["Diabetes"] = per->second.diabetes ? 1 : 0;
+                x[index]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
+                x[index]["Handcap"] = per->second.handicap ? 1 : 0;
+                x[index]["SMS_received"] = per->second.smsReceived ? 1 : 0;
+                x[index]["No-show"] = per->second.noShow;
+                index++;
+            }
+            std::cout << x.size() << std::endl;
+            res.write(x.dump());
+    
+    return res;
+            });
+    
+    
+    CROW_ROUTE(app, "/last20Hyper")
+        .methods("GET"_method)
+        ([&hypertensions](const crow::request& req) {
+        crow::response res;
+            
+
+    // Set CORS headers
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_header("Access-Control-Allow-Methods", "GET");
+            res.set_header("Access-Control-Allow-Headers", "Content-Type");
+            crow::json::wvalue x;
+            int numPat = 20;
+            int index = 0;
+            if(hypertensions.size() < 20){
+                numPat = hypertensions.size();
+            }
+            for(auto i = hypertensions.rbegin(); index < numPat; i++){
+                auto per = i;
+                x[index]["PatientId"] = per->second.id;
+                x[index]["PatientName"] = per->second.name;
+                x[index]["AppointmentID"] = per->second.appointmentId;
+                x[index]["Gender"] = per->second.gender;
+                x[index]["ScheduledDay"] = per->second.scheduledDay;
+                x[index]["AppointmentDay"] = per->second.appointmentDay;
+                x[index]["Age"] = per->second.age;
+                x[index]["Neighbourhood"] = per->second.neighbourhood;
+                x[index]["Scholarship"] = per->second.scholarship ? 1 : 0;
+                x[index]["Hipertension"] = per->second.hypertension ? 1 : 0;
+                x[index]["Diabetes"] = per->second.diabetes ? 1 : 0;
+                x[index]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
+                x[index]["Handcap"] = per->second.handicap ? 1 : 0;
+                x[index]["SMS_received"] = per->second.smsReceived ? 1 : 0;
+                x[index]["No-show"] = per->second.noShow;
+                index++;
+            }
+            std::cout << x.size() << std::endl;
+            res.write(x.dump());
+    
+    return res;
+            });
+    
+    CROW_ROUTE(app, "/last20Schol")
+        .methods("GET"_method)
+        ([&scholars](const crow::request& req) {
+        crow::response res;
+            
+
+    // Set CORS headers
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_header("Access-Control-Allow-Methods", "GET");
+            res.set_header("Access-Control-Allow-Headers", "Content-Type");
+            crow::json::wvalue x;
+            int numPat = 20;
+            int index = 0;
+            if(scholars.size() < 20){
+                numPat = scholars.size();
+            }
+            for(auto i = scholars.rbegin(); index < numPat; i++){
+                auto per = i;
+                x[index]["PatientId"] = per->second.id;
+                x[index]["PatientName"] = per->second.name;
+                x[index]["AppointmentID"] = per->second.appointmentId;
+                x[index]["Gender"] = per->second.gender;
+                x[index]["ScheduledDay"] = per->second.scheduledDay;
+                x[index]["AppointmentDay"] = per->second.appointmentDay;
+                x[index]["Age"] = per->second.age;
+                x[index]["Neighbourhood"] = per->second.neighbourhood;
+                x[index]["Scholarship"] = per->second.scholarship ? 1 : 0;
+                x[index]["Hipertension"] = per->second.hypertension ? 1 : 0;
+                x[index]["Diabetes"] = per->second.diabetes ? 1 : 0;
+                x[index]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
+                x[index]["Handcap"] = per->second.handicap ? 1 : 0;
+                x[index]["SMS_received"] = per->second.smsReceived ? 1 : 0;
+                x[index]["No-show"] = per->second.noShow;
+                index++;
+            }
+            std::cout << x.size() << std::endl;
+            res.write(x.dump());
+    
+    return res;
+            });
+    
+    CROW_ROUTE(app, "/last20Handi")
+        .methods("GET"_method)
+        ([&handicaps](const crow::request& req) {
+        crow::response res;
+            
+
+    // Set CORS headers
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_header("Access-Control-Allow-Methods", "GET");
+            res.set_header("Access-Control-Allow-Headers", "Content-Type");
+            crow::json::wvalue x;
+            int numPat = 20;
+            int index = 0;
+            if(handicaps.size() < 20){
+                numPat = handicaps.size();
+            }
+            for(auto i = handicaps.rbegin(); index < numPat; i++){
+                auto per = i;
+                x[index]["PatientId"] = per->second.id;
+                x[index]["PatientName"] = per->second.name;
+                x[index]["AppointmentID"] = per->second.appointmentId;
+                x[index]["Gender"] = per->second.gender;
+                x[index]["ScheduledDay"] = per->second.scheduledDay;
+                x[index]["AppointmentDay"] = per->second.appointmentDay;
+                x[index]["Age"] = per->second.age;
+                x[index]["Neighbourhood"] = per->second.neighbourhood;
+                x[index]["Scholarship"] = per->second.scholarship ? 1 : 0;
+                x[index]["Hipertension"] = per->second.hypertension ? 1 : 0;
+                x[index]["Diabetes"] = per->second.diabetes ? 1 : 0;
+                x[index]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
+                x[index]["Handcap"] = per->second.handicap ? 1 : 0;
+                x[index]["SMS_received"] = per->second.smsReceived ? 1 : 0;
+                x[index]["No-show"] = per->second.noShow;
+                index++;
+            }
+            std::cout << x.size() << std::endl;
+            res.write(x.dump());
+    
+    return res;
+            });
+    
+    CROW_ROUTE(app, "/last20Alc")
+        .methods("GET"_method)
+        ([&alcholics](const crow::request& req) {
+        crow::response res;
+            
+
+    // Set CORS headers
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_header("Access-Control-Allow-Methods", "GET");
+            res.set_header("Access-Control-Allow-Headers", "Content-Type");
+            crow::json::wvalue x;
+            int numPat = 20;
+            int index = 0;
+            if(alcholics.size() < 20){
+                numPat = alcholics.size();
+            }
+            for(auto i = alcholics.rbegin(); index < numPat; i++){
+                auto per = i;
+                x[index]["PatientId"] = per->second.id;
+                x[index]["PatientName"] = per->second.name;
+                x[index]["AppointmentID"] = per->second.appointmentId;
+                x[index]["Gender"] = per->second.gender;
+                x[index]["ScheduledDay"] = per->second.scheduledDay;
+                x[index]["AppointmentDay"] = per->second.appointmentDay;
+                x[index]["Age"] = per->second.age;
+                x[index]["Neighbourhood"] = per->second.neighbourhood;
+                x[index]["Scholarship"] = per->second.scholarship ? 1 : 0;
+                x[index]["Hipertension"] = per->second.hypertension ? 1 : 0;
+                x[index]["Diabetes"] = per->second.diabetes ? 1 : 0;
+                x[index]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
+                x[index]["Handcap"] = per->second.handicap ? 1 : 0;
+                x[index]["SMS_received"] = per->second.smsReceived ? 1 : 0;
+                x[index]["No-show"] = per->second.noShow;
+                index++;
+            }
+            std::cout << x.size() << std::endl;
+            res.write(x.dump());
+    
+    return res;
+            });
+    
+    
+    CROW_ROUTE(app, "/logout")
+            .methods("GET"_method)
+            ([&patients](const crow::request& req) {
+            crow::response res;
+            res.set_header("Access-Control-Allow-Origin", "*");
+            res.set_header("Access-Control-Allow-Methods", "GET");
+            res.set_header("Access-Control-Allow-Headers", "Content-Type");
+            crow::json::wvalue x;
+            int total = patients.size();
+            int fileInd = 0;
+            for (unsigned i = 1; i <= total; i++) {
+                auto per = patients.find(i);
+                if (per == patients.end()) {
+                    total++;
+                    continue;
+                }
+                x[fileInd]["PatientId"] = per->second.id;
+                x[fileInd]["PatientName"] = per->second.name;
+                x[fileInd]["AppointmentID"] = per->second.appointmentId;
+                x[fileInd]["Gender"] = per->second.gender;
+                x[fileInd]["ScheduledDay"] = per->second.scheduledDay;
+                x[fileInd]["AppointmentDay"] = per->second.appointmentDay;
+                x[fileInd]["Age"] = per->second.age;
+                x[fileInd]["Neighbourhood"] = per->second.neighbourhood;
+                x[fileInd]["Scholarship"] = per->second.scholarship ? 1 : 0;
+                x[fileInd]["Hipertension"] = per->second.hypertension ? 1 : 0;
+                x[fileInd]["Diabetes"] = per->second.diabetes ? 1 : 0;
+                x[fileInd]["Alcoholism"] = per->second.alcoholism ? 1 : 0;
+                x[fileInd]["Handcap"] = per->second.handicap ? 1 : 0;
+                x[fileInd]["SMS_received"] = per->second.smsReceived ? 1 : 0;
+                x[fileInd]["No-show"] = per->second.noShow;
+                fileInd++;
+            }
+            std::ofstream outputFile("/Users/jonassegundo/Desktop/180DB/test1.json");
+            std::string out = x.dump();
+            outputFile << out;
+            outputFile.close();
+                return res;
+                });
+    
+    
+    
     app.port(3000).multithreaded().run();
 }
 
-//http://0.0.0.0:3000/updatePatient?newName=Jack&newAge=20&id=1&newAppointID=213213213&newGend=M&newSched=1/2/3&newAppDay=1/2/3&newNeigh=Oakland&scholar=0&hyperTen=1&diabet=0&alch=1&handi=1&sms=1&ns=yes
+//http://0.0.0.0:3000/updatePatient?newName=Jack&newAge=20&newAppointID=213213213&newGend=M&newSched=1/2/3&newAppDay=1/2/3&newNeigh=Oakland&scholar=0&hyperTen=1&diabet=0&alch=1&handi=1&sms=1&ns=yes
+
+//http://0.0.0.0:3000/addPatient?newName=Jack&newAge=20&id=1&newAppointID=213213213&newGend=M&newSched=1/2/3&newAppDay=1/2/3&newNeigh=Oakland&scholar=0&hyperTen=1&diabet=0&alch=1&handi=1&sms=1&ns=yes
 
 //std::string path2Patient = "C:\\Users\\PC\\Desktop\\CS180DB\\test.json";
+
