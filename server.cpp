@@ -137,6 +137,8 @@ public:
         a.information = info;
         a.id = aptId;
         a.noShow = ns;
+
+        appointments_struct.push_back(a);
     }
 
     /**getRecentAppointments: Gets the x most recent appointments as a pointer to a vector of Appointment structs.
@@ -145,17 +147,17 @@ public:
     std::vector<Appointment>* getRecentAppointments_Struct(int numberToGet){
         std::vector<Appointment>* temp;
 
-        if (numberToGet <= appointments_int.size()){
+        if (numberToGet <= appointments_struct.size()){
             int index = 1;
             
             while (index < numberToGet){
-                temp->push_back(appointments_int[appointments_int.size() - index]);
+                temp->push_back(appointments_struct[appointments_struct.size() - index]);
                 ++index;
             }
 
             return temp;
         } else {
-            for (Appointment item : appointments_int){
+            for (Appointment item : appointments_struct){
                 temp->push_back(item);
             }
 
