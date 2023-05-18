@@ -19,6 +19,7 @@ function Dashboard() {
   const [showUpdate, setShowUpdate] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [reloadLast20, setReloadLast20] = useState(false);
 
   const handleSearch = async () => {
     const response = await fetch(`http://0.0.0.0:3000/getInfo?id=${id}`);
@@ -77,7 +78,9 @@ function Dashboard() {
     }
   };
   
-
+  const handleReload = () => {
+    setReloadLast20(true);
+  };
   
   const handleDelete = async () => {
     const response = await fetch(`http://0.0.0.0:3000/deletePatient?id=${id}`);
@@ -109,14 +112,10 @@ function Dashboard() {
     const data = await response.json();
     console.log('Output:', data);
   };
-  
-
-  const handleReload = () => {
-  };
 
   return (
     <div className="Dashboard">
-      <Header onAdd={handleAdd} onReload={handleReload} />
+      <Header onAdd={handleAdd} onReload={handleReload} setReloadLast20={setReloadLast20} />
       <h3>Search Patient by ID</h3>
       <div className="p-inputgroup">
         <InputText value={id} onChange={(e) => setId(e.target.value)} placeholder="Enter ID" />
@@ -139,7 +138,7 @@ function Dashboard() {
       />
       {/*recent20Table component */}
       <h3>Recently added patients</h3>
-      <Last20Table />
+      <Last20Table reload={reloadLast20} />
       <h3>Alcohol addiction </h3>
       <Last20alc />
     </div>

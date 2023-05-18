@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 
-const Last20Table = () => {
+const Last20Table = ({ reload }) => {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -13,7 +13,7 @@ const Last20Table = () => {
     fetch("http://0.0.0.0:3000/last20")
       .then((response) => response.json())
       .then((data) => setPatients(data));
-  }, []);
+  }, [reload]);
 
   const openDialog = (patient) => {
     setSelectedPatient(patient);

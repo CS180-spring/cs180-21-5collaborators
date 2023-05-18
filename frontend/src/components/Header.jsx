@@ -6,8 +6,9 @@ import { FaPlus, FaSync, FaSignOutAlt } from "react-icons/fa";
 import AddPatient from "./AddPatient";
 import axios from 'axios';
 
-const Header = ({ onAdd, onReload }) => {
+const Header = ({ onAdd, onReload,setReloadLast20 }) => {
   const [showAddForm, setShowAddForm] = useState(false);
+  
 
   const handleLogout = () => {
     axios.get('http://0.0.0.0:3000/logout')
@@ -30,14 +31,10 @@ const Header = ({ onAdd, onReload }) => {
   };
 
   const handleReload = () => {
-    axios.get('http://0.0.0.0:3000/last20')
-      .then(response => {
-        console.log(response);
-        onReload();
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+    // Trigger the refresh callback in the Dashboard component
+    onReload();
+    // Set reloadLast20 state to true to refresh the Last20Table component
+    setReloadLast20(true);
   };
 
   return (
@@ -59,8 +56,8 @@ const Header = ({ onAdd, onReload }) => {
               <FaPlus className="mr-1" /> Add New
             </Nav.Link>
             <Nav.Link href="#reload" className="btn btn-success mr-4" onClick={handleReload}>
-              <FaSync className="mr-1" /> Reload
-            </Nav.Link>
+      <FaSync className="mr-1" /> Reload
+    </Nav.Link>
             <Nav.Link onClick={handleLogout} className="btn btn-danger">
               <FaSignOutAlt className="mr-1" /> Log Out
             </Nav.Link>
