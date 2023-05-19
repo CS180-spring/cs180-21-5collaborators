@@ -4,6 +4,7 @@ import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Sidebar } from 'primereact/sidebar';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -13,6 +14,7 @@ import Last20Table from "../components/Last20Table";
 import Last20alc from '../components/Last20alc';
 import UpdatePatient from "../components/UpdatePatient";
 
+
 function Dashboard() {
   const [id, setId] = useState('');
   const [info, setInfo] = useState(null);
@@ -20,6 +22,8 @@ function Dashboard() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [reloadLast20, setReloadLast20] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+
 
   const handleSearch = async () => {
     const response = await fetch(`http://0.0.0.0:3000/getInfo?id=${id}`);
@@ -116,6 +120,9 @@ function Dashboard() {
   return (
     <div className="Dashboard">
       <Header onAdd={handleAdd} onReload={handleReload} setReloadLast20={setReloadLast20} />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+      <Button label="Filter" onClick={() => setShowSidebar(true)} className="p-button-secondary" />
+    </div>
       <h3>Search Patient by ID</h3>
       <div className="p-inputgroup">
         <InputText value={id} onChange={(e) => setId(e.target.value)} placeholder="Enter ID" />
@@ -141,6 +148,21 @@ function Dashboard() {
       <Last20Table reload={reloadLast20} />
       <h3>Alcohol addiction </h3>
       <Last20alc />
+      <Sidebar visible={showSidebar} onHide={() => setShowSidebar(false)}>
+  <h3>Filter</h3>
+  <div style={{ marginTop: '10px' }}>
+    <Button label="Hypertension" className="p-button-secondary" style={{ backgroundColor: 'red', marginBottom: '10px', display: 'block' }} />
+    <Button label="Diabetes" className="p-button-secondary" style={{ backgroundColor: 'blue', marginBottom: '10px', display: 'block' }} />
+    <Button label="Alcoholism" className="p-button-secondary" style={{ backgroundColor: 'green', marginBottom: '10px', display: 'block' }} />
+    <Button label="Handicap" className="p-button-secondary" style={{ backgroundColor: 'orange', marginBottom: '10px', display: 'block' }} />
+  </div>
+</Sidebar>
+
+
+
+
+
+
     </div>
   );
 };
