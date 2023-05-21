@@ -8,10 +8,13 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-import Header from "../components/Header";
-import Last20Table from "../components/Last20Table";
+import Header from '../components/Header';
+import Last20Table from '../components/Last20Table';
 import Last20alc from '../components/Last20alc';
-import UpdatePatient from "../components/UpdatePatient";
+import Last20hyper from '../components/Last20hyper';
+import Last20dia from '../components/Last20dia';
+import Last20handi from '../components/Last20handi';
+import UpdatePatient from '../components/UpdatePatient';
 
 
 function Dashboard() {
@@ -23,6 +26,10 @@ function Dashboard() {
   const [reloadLast20, setReloadLast20] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [showLast20alc, setShowLast20alc] = useState(false);
+  const [showLast20hyper, setShowLast20hyper] = useState(false);
+  const [showLast20dia, setShowLast20dia] = useState(false);
+  const [showLast20handi, setShowLast20handi] = useState(false);
+  const [showLast20Table, setShowLast20Table] = useState(true);
 
 
 
@@ -102,8 +109,40 @@ function Dashboard() {
 
   const handleLast20alcClick = () => {
     setShowLast20alc(true);
+    setShowLast20Table(false);
+    setShowLast20hyper(false);
+    setShowLast20dia(false);
   };
-  
+
+  const handleLast20hyperClick = () => {
+    setShowLast20hyper(true);
+    setShowLast20Table(false);
+    setShowLast20alc(false);
+    setShowLast20dia(false);
+  };
+
+  const handleLast20diaClick = () => {
+    setShowLast20dia(true);
+    setShowLast20Table(false);
+    setShowLast20alc(false);
+    setShowLast20hyper(false);
+  };
+
+  const handleLast20handiClick = () => {
+    setShowLast20handi(true);
+    setShowLast20Table(false);
+    setShowLast20alc(false);
+    setShowLast20hyper(false);
+    setShowLast20dia(false);
+  };
+
+  const handleLast20recentClick = () => {
+    setShowLast20handi(false);
+    setShowLast20Table(true);
+    setShowLast20alc(false);
+    setShowLast20hyper(false);
+    setShowLast20dia(false);
+  };
   
   const handleAdd = async (patient) => {
     const params = new URLSearchParams({
@@ -140,22 +179,22 @@ function Dashboard() {
       />
       <Button
         label="Hypertension"
-        //onClick={() => handleButtonClick('Hypertension')}
+        onClick={handleLast20hyperClick}
         style={{ backgroundColor: '#D08770', color: 'white', marginBottom: '10px' }}
       />
       <Button
         label="Diabetes"
-        //onClick={() => handleButtonClick('Diabetes')}
+        onClick={handleLast20diaClick}
         style={{ backgroundColor: '#EBCB8B', color: 'white', marginBottom: '10px' }}
       />
       <Button
         label="Handicap"
-        //onClick={() => handleButtonClick('Handicap')}
+        onClick={handleLast20handiClick}
         style={{ backgroundColor: '#A3BE8C', color: 'white', marginBottom: '10px' }}
       />
       <Button
         label="Recent"
-        //onClick={() => handleButtonClick('Recent')}
+        onClick={handleLast20recentClick}
         style={{ backgroundColor: '#B48EAD', color: 'white', marginBottom: '10px' }}
       />
     </div>
@@ -182,8 +221,11 @@ function Dashboard() {
         onHide={() => setShowUpdate(false)}
         onSubmit={handleUpdate}
       />
-      <Last20Table reload={reloadLast20} />
+      {showLast20Table && <Last20Table reload={reloadLast20} />}
       {showLast20alc && <Last20alc visible={showLast20alc} onClose={() => setShowLast20alc(false)} />}
+      {showLast20hyper && <Last20hyper visible={showLast20hyper} onClose={() => setShowLast20hyper(false)} />}
+      {showLast20dia && <Last20dia visible={showLast20dia} onClose={() => setShowLast20dia(false)} />}
+      {showLast20handi && <Last20handi visible={showLast20handi} onClose={() => setShowLast20handi(false)} />}
       <footer style={{ backgroundColor: '#f0f0f0', padding: '20px', textAlign: 'center' }}>
       <p>&copy; 2023 LionJet. All rights reserved.</p>
     </footer>
