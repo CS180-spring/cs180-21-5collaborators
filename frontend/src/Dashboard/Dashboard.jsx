@@ -153,6 +153,11 @@ function Dashboard() {
         //onClick={() => handleButtonClick('Handicap')}
         style={{ backgroundColor: '#A3BE8C', color: 'white', marginBottom: '10px' }}
       />
+      <Button
+        label="Recent"
+        //onClick={() => handleButtonClick('Recent')}
+        style={{ backgroundColor: '#B48EAD', color: 'white', marginBottom: '10px' }}
+      />
     </div>
       <h3>Search Patient by ID</h3>
       <div className="p-inputgroup">
