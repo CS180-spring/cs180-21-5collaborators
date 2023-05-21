@@ -108,24 +108,27 @@ function Dashboard() {
   };
 
   const handleLast20alcClick = () => {
-    setShowLast20alc(true);
+    setShowLast20handi(false);
     setShowLast20Table(false);
+    setShowLast20alc(true);
     setShowLast20hyper(false);
     setShowLast20dia(false);
   };
 
   const handleLast20hyperClick = () => {
-    setShowLast20hyper(true);
+    setShowLast20handi(false);
     setShowLast20Table(false);
     setShowLast20alc(false);
+    setShowLast20hyper(true);
     setShowLast20dia(false);
   };
 
   const handleLast20diaClick = () => {
-    setShowLast20dia(true);
+    setShowLast20handi(false);
     setShowLast20Table(false);
     setShowLast20alc(false);
     setShowLast20hyper(false);
+    setShowLast20dia(true);
   };
 
   const handleLast20handiClick = () => {
