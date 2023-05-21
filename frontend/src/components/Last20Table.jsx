@@ -37,6 +37,7 @@ const Last20Table = ({ reload }) => {
 
   return (
     <div>
+      <h3>Recently added patients</h3>
       <DataTable value={patients}>
         <Column field="PatientId" header="Patient ID" />
         <Column field="PatientName" header="Patient Name" />

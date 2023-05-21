@@ -4,10 +4,9 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 
-const Last20alc = () => {
+const Last20alc = ({ visible, onClose }) => {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const [dialogVisible, setDialogVisible] = useState(false);
 
   useEffect(() => {
     fetch("http://0.0.0.0:3000/last20Alc")
@@ -17,11 +16,10 @@ const Last20alc = () => {
 
   const openDialog = (patient) => {
     setSelectedPatient(patient);
-    setDialogVisible(true);
   };
 
   const closeDialog = () => {
-    setDialogVisible(false);
+    setSelectedPatient(null);
   };
 
   const viewTemplate = (rowData) => {
@@ -37,6 +35,7 @@ const Last20alc = () => {
 
   return (
     <div>
+      <h3>Alcoholic patients</h3>
       <DataTable value={patients}>
         <Column field="PatientId" header="Patient ID" />
         <Column field="PatientName" header="Patient Name" />
@@ -45,7 +44,7 @@ const Last20alc = () => {
       </DataTable>
 
       <Dialog
-        visible={dialogVisible}
+        visible={!!selectedPatient}
         onHide={closeDialog}
         header="Patient Details"
         modal
@@ -73,6 +72,6 @@ const Last20alc = () => {
       </Dialog>
     </div>
   );
-}
+};
 export default Last20alc;
 

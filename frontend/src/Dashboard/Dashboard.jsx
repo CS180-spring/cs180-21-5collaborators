@@ -4,7 +4,6 @@ import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { Sidebar } from 'primereact/sidebar';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -22,13 +21,16 @@ function Dashboard() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [reloadLast20, setReloadLast20] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [showLast20alc, setShowLast20alc] = useState(false);
+
 
 
   const handleSearch = async () => {
     const response = await fetch(`http://0.0.0.0:3000/getInfo?id=${id}`);
     const data = await response.json();
     setInfo(data);
+    setShowResult(true); // Show the search result
   };
 
   const handleUpdate = async (updatedInfo) => {
@@ -85,15 +87,24 @@ function Dashboard() {
   const handleReload = () => {
     setReloadLast20(true);
   };
-  
+
+  const handleCloseResult = () => {
+    setShowResult(false);
+  };
+
   const handleDelete = async () => {
     const response = await fetch(`http://0.0.0.0:3000/deletePatient?id=${id}`);
     const data = await response.json();
     console.log(data); // add this line
     setInfo(null);
     setDeleteSuccess(true);
-  };  
+  };
 
+  const handleLast20alcClick = () => {
+    setShowLast20alc(true);
+  };
+  
+  
   const handleAdd = async (patient) => {
     const params = new URLSearchParams({
       newName: patient.PatientName,
@@ -120,52 +131,60 @@ function Dashboard() {
   return (
     <div className="Dashboard">
       <Header onAdd={handleAdd} onReload={handleReload} setReloadLast20={setReloadLast20} />
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
-      <Button label="Filter" onClick={() => setShowSidebar(true)} className="p-button-secondary" />
+      <div className="button-bar" style={{ border: '1px solid black', padding: '10px' }}>
+      <h5>Filter Patient</h5>
+      <Button
+        label="Alcoholism"
+        onClick={handleLast20alcClick}
+        style={{ backgroundColor: '#BF616A', color: 'white', marginBottom: '10px' }}
+      />
+      <Button
+        label="Hypertension"
+        //onClick={() => handleButtonClick('Hypertension')}
+        style={{ backgroundColor: '#D08770', color: 'white', marginBottom: '10px' }}
+      />
+      <Button
+        label="Diabetes"
+        //onClick={() => handleButtonClick('Diabetes')}
+        style={{ backgroundColor: '#EBCB8B', color: 'white', marginBottom: '10px' }}
+      />
+      <Button
+        label="Handicap"
+        //onClick={() => handleButtonClick('Handicap')}
+        style={{ backgroundColor: '#A3BE8C', color: 'white', marginBottom: '10px' }}
+      />
     </div>
       <h3>Search Patient by ID</h3>
       <div className="p-inputgroup">
         <InputText value={id} onChange={(e) => setId(e.target.value)} placeholder="Enter ID" />
         <Button label="Search" onClick={handleSearch} />
       </div>
-      {info && <DisplayInfo info={info} />}
+      {showResult && (
+        <>
+          {info && <DisplayInfo info={info} />}
+          <div className="p-inputgroup">
+            <Button label="Update" onClick={() => setShowUpdate(true)} />
+            <Button label="Delete" onClick={handleDelete} className="p-button-danger" />
+            <Button label="Close" onClick={handleCloseResult} className="p-button-secondary" />
+          </div>
+        </>
+      )}
       {updateSuccess && <p style={{ color: 'green' }}>Patient record updated successfully.</p>}
       {deleteSuccess && <p style={{ color: 'green' }}>Patient record deleted successfully.</p>}
-      {info && (
-        <div className="p-inputgroup">
-          <Button label="Update" onClick={() => setShowUpdate(true)} />
-          <Button label="Delete" onClick={handleDelete} className="p-button-danger" />
-        </div>
-      )}
       <UpdatePatient
         info={info}
         visible={showUpdate}
         onHide={() => setShowUpdate(false)}
         onSubmit={handleUpdate}
       />
-      {/*recent20Table component */}
-      <h3>Recently added patients</h3>
       <Last20Table reload={reloadLast20} />
-      <h3>Alcohol addiction </h3>
-      <Last20alc />
-      <Sidebar visible={showSidebar} onHide={() => setShowSidebar(false)}>
-  <h3>Filter</h3>
-  <div style={{ marginTop: '10px' }}>
-    <Button label="Hypertension" className="p-button-secondary" style={{ backgroundColor: 'red', marginBottom: '10px', display: 'block' }} />
-    <Button label="Diabetes" className="p-button-secondary" style={{ backgroundColor: 'blue', marginBottom: '10px', display: 'block' }} />
-    <Button label="Alcoholism" className="p-button-secondary" style={{ backgroundColor: 'green', marginBottom: '10px', display: 'block' }} />
-    <Button label="Handicap" className="p-button-secondary" style={{ backgroundColor: 'orange', marginBottom: '10px', display: 'block' }} />
-  </div>
-</Sidebar>
-
-
-
-
-
-
+      {showLast20alc && <Last20alc visible={showLast20alc} onClose={() => setShowLast20alc(false)} />}
+      <footer style={{ backgroundColor: '#f0f0f0', padding: '20px', textAlign: 'center' }}>
+      <p>&copy; 2023 LionJet. All rights reserved.</p>
+    </footer>
     </div>
   );
-};
+}
 
 const DisplayInfo = ({ info }) => {
   if (info.error === "No patient found") {
@@ -198,7 +217,6 @@ const DisplayInfo = ({ info }) => {
       </DataTable>
     </Card>
   );
-};
-
+}
 
 export default Dashboard;
