@@ -2,13 +2,12 @@ import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import Logo from "../logo.png";
 import { useState } from "react";
-import { FaPlus, FaSync, FaSignOutAlt } from "react-icons/fa";
+import { FaPlus, FaSync, FaSignOutAlt, FaDownload } from "react-icons/fa";
 import AddPatient from "./AddPatient";
 import axios from 'axios';
 
-const Header = ({ onAdd, onReload,setReloadLast20 }) => {
+const Header = ({ onAdd, onReload, setReloadLast20 }) => {
   const [showAddForm, setShowAddForm] = useState(false);
-  
 
   const handleLogout = () => {
     axios.get('http://0.0.0.0:3000/logout')
@@ -37,6 +36,26 @@ const Header = ({ onAdd, onReload,setReloadLast20 }) => {
     setReloadLast20(true);
   };
 
+  const handleExport = () => {
+    axios.get('http://0.0.0.0:3000/export')
+      .then(response => {
+        // Convert the response data to JSON format
+        const jsonData = JSON.stringify(response.data);
+
+        // Create a download link and trigger the download
+        const downloadLink = document.createElement('a');
+        downloadLink.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonData);
+        downloadLink.download = 'data.json';
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -55,9 +74,12 @@ const Header = ({ onAdd, onReload,setReloadLast20 }) => {
             <Nav.Link onClick={handleAddNew} className="btn btn-primary mr-4">
               <FaPlus className="mr-1" /> Add New
             </Nav.Link>
-            <Nav.Link href="#reload" className="btn btn-success mr-4" onClick={handleReload}>
-      <FaSync className="mr-1" /> Reload
-    </Nav.Link>
+            <Nav.Link onClick={handleReload} className="btn btn-success mr-4">
+              <FaSync className="mr-1" /> Reload
+            </Nav.Link>
+            <Nav.Link onClick={handleExport} className="btn btn-warning mr-4">
+              <FaDownload className="mr-1" /> Export
+            </Nav.Link>
             <Nav.Link onClick={handleLogout} className="btn btn-danger">
               <FaSignOutAlt className="mr-1" /> Log Out
             </Nav.Link>
