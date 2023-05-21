@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import Logo from "../logo.png";
 import { useState } from "react";
-import { FaPlus, FaSync, FaSignOutAlt, FaDownload } from "react-icons/fa";
+import { FaPlus, FaSignOutAlt, FaDownload } from "react-icons/fa";
 import AddPatient from "./AddPatient";
 import axios from 'axios';
 
@@ -27,13 +27,6 @@ const Header = ({ onAdd, onReload, setReloadLast20 }) => {
 
   const handleCloseAddForm = () => {
     setShowAddForm(false);
-  };
-
-  const handleReload = () => {
-    // Trigger the refresh callback in the Dashboard component
-    onReload();
-    // Set reloadLast20 state to true to refresh the Last20Table component
-    setReloadLast20(true);
   };
 
   const handleExport = () => {
@@ -73,9 +66,6 @@ const Header = ({ onAdd, onReload, setReloadLast20 }) => {
           <Nav>
             <Nav.Link onClick={handleAddNew} className="btn btn-primary mr-4">
               <FaPlus className="mr-1" /> Add New
-            </Nav.Link>
-            <Nav.Link onClick={handleReload} className="btn btn-success mr-4">
-              <FaSync className="mr-1" /> Reload
             </Nav.Link>
             <Nav.Link onClick={handleExport} className="btn btn-warning mr-4">
               <FaDownload className="mr-1" /> Export
