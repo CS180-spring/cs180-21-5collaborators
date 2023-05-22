@@ -23,7 +23,7 @@ function Dashboard() {
   const [id, setId] = useState('');
   const [info, setInfo] = useState(null);
   const [showUpdate, setShowUpdate] = useState(false);
-  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [updateSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [showLast20alc, setShowLast20alc] = useState(false);
