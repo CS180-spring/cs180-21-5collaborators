@@ -15,6 +15,9 @@ import Last20hyper from '../components/Last20hyper';
 import Last20dia from '../components/Last20dia';
 import Last20handi from '../components/Last20handi';
 import UpdatePatient from '../components/UpdatePatient';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGlassCheers, faHeartbeat, faTint, faWheelchair, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 
 function Dashboard() {
@@ -169,34 +172,49 @@ function Dashboard() {
     <div className="Dashboard">
       <Header onAdd={handleAdd} />
       <div className="button-bar" style={{ border: '1px solid black', padding: '10px' }}>
-      <h5>Filter Patient</h5>
-      <Button
-        label="Alcoholism"
-        onClick={handleLast20alcClick}
-        style={{ backgroundColor: '#BF616A', color: 'white', marginBottom: '10px' }}
-      />
-      <Button
-        label="Hypertension"
-        onClick={handleLast20hyperClick}
-        style={{ backgroundColor: '#D08770', color: 'white', marginBottom: '10px' }}
-      />
-      <Button
-        label="Diabetes"
-        onClick={handleLast20diaClick}
-        style={{ backgroundColor: '#EBCB8B', color: 'white', marginBottom: '10px' }}
-      />
-      <Button
-        label="Handicap"
-        onClick={handleLast20handiClick}
-        style={{ backgroundColor: '#A3BE8C', color: 'white', marginBottom: '10px' }}
-      />
-      <Button
-        label="Reload"
-        onClick={handleLast20recentClick}
-        style={{ backgroundColor: '#B48EAD', color: 'white', marginBottom: '10px' }}
-      />
-    </div>
-      <h3>Search Patient by ID</h3>
+  <h5>Filter Patient</h5>
+  <Button
+    label={<>
+      <FontAwesomeIcon icon={faGlassCheers} style={{ marginRight: '5px' }} />
+      Alcoholism
+    </>}
+    onClick={handleLast20alcClick}
+    style={{ backgroundColor: '#BF616A', color: 'white', marginBottom: '10px' }}
+  />
+  <Button
+    label={<>
+      <FontAwesomeIcon icon={faHeartbeat} style={{ marginRight: '5px' }} />
+      Hypertension
+    </>}
+    onClick={handleLast20hyperClick}
+    style={{ backgroundColor: '#D08770', color: 'white', marginBottom: '10px' }}
+  />
+  <Button
+    label={<>
+      <FontAwesomeIcon icon={faTint} style={{ marginRight: '5px' }} />
+      Diabetes
+    </>}
+    onClick={handleLast20diaClick}
+    style={{ backgroundColor: '#EBCB8B', color: 'white', marginBottom: '10px' }}
+  />
+  <Button
+    label={<>
+      <FontAwesomeIcon icon={faWheelchair} style={{ marginRight: '5px' }} />
+      Handicap
+    </>}
+    onClick={handleLast20handiClick}
+    style={{ backgroundColor: '#A3BE8C', color: 'white', marginBottom: '10px' }}
+  />
+  <Button
+    label={<>
+      <FontAwesomeIcon icon={faSyncAlt} style={{ marginRight: '5px' }} />
+      Reload
+    </>}
+    onClick={handleLast20recentClick}
+    style={{ backgroundColor: '#B48EAD', color: 'white', marginBottom: '10px' }}
+  />
+</div>
+      <h4>Search Patient by ID</h4>
       <div className="p-inputgroup">
         <InputText value={id} onChange={(e) => setId(e.target.value)} placeholder="Enter ID" />
         <Button label="Search" onClick={handleSearch} />
