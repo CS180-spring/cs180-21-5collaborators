@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -6,7 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 
 const UpdatePatient = ({ info, visible, onHide, onSubmit }) => {
-  const getInitialInfo = () => {
+  const getInitialInfo = useCallback(() => {
     return info || {
       PatientId: '',
       PatientName: '',
@@ -24,13 +24,14 @@ const UpdatePatient = ({ info, visible, onHide, onSubmit }) => {
       SMS_received: '',
       'No-show': '',
     };
-  };
+  }, [info]);
 
   const [updatedInfo, setUpdatedInfo] = useState(getInitialInfo());
 
   useEffect(() => {
     setUpdatedInfo(getInitialInfo());
-  }, [info]);
+  }, [info, getInitialInfo]);
+  
 
   const genderOptions = [
     { label: 'M', value: 'M' },

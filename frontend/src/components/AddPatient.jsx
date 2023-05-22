@@ -62,7 +62,6 @@ const AddPatient = ({ visible, onHide, onAdd }) => {
     }
   };
   
-
   const renderFooter = () => {
     return (
       <div>
