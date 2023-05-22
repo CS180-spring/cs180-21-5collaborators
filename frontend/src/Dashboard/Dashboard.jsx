@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { Card } from 'primereact/card';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import 'primereact/resources/themes/saga-blue/theme.css';
@@ -263,22 +262,22 @@ const DisplayInfo = ({ info }) => {
     { field: 'Appointment ID', value: info.AppointmentID },
     { field: 'Appointment Day', value: info.AppointmentDay },
     { field: 'Scheduled Day', value: info.ScheduledDay },
-    { field: 'Scholarship', value: info.Scholarship },
-    { field: 'Alcoholism', value: info.Alcoholism },
-    { field: 'Handcap', value: info.Handcap },
-    { field: 'Hipertension', value: info.Hipertension },
-    { field: 'Diabetes', value: info.Diabetes },
-    { field: 'SMS Received', value: info.SMS_received },
-    { field: 'No-show', value: info['No-show'] }
+    { field: 'Scholarship', value: info.Scholarship === 0 ? 'No' : 'Yes' },
+    { field: 'Alcoholism', value: info.Alcoholism === 0 ? 'No' : 'Yes' },
+    { field: 'Handcap', value: info.Handcap === 0 ? 'No' : 'Yes' },
+    { field: 'Hipertension', value: info.Hipertension === 0 ? 'No' : 'Yes' },
+    { field: 'Diabetes', value: info.Diabetes === 0 ? 'No' : 'Yes' },
+    { field: 'SMS Received', value: info.SMS_received === 0 ? 'No' : 'Yes' },
+    { field: 'No-show', value: info['No-show'] === 0 ? 'No' : 'Yes' }
   ];
 
   return (
-    <Card title="Patient Information">
+    <div className="datatable-demo">
       <DataTable value={data}>
         <Column field="field" header="Field" />
         <Column field="value" header="Value" />
       </DataTable>
-    </Card>
+    </div>
   );
 }
 
