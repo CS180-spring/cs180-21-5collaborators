@@ -816,6 +816,17 @@ int main()
             outputFile.close();
                 return res;
                 });
+            
+    CROW_ROUTE(app, "/import")
+    .methods("POST"_method)
+    ([&importString](const crow::request& req){
+        auto x = crow::json::load(req.body);
+        crow::json::wvalue y(x);
+        if (!x)
+            return crow::response(crow::status::BAD_REQUEST); // same as crow::response(400)
+        importString=y.dump();
+        return crow::response{importString};
+    });
     
     
     
