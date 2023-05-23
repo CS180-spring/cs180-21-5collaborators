@@ -43,6 +43,7 @@ public:
 
 int main()
 {
+    std::string importString;
     std::string path2Patient = "";
     std::cout << "Insert path to database" << std::endl;
     getline(std::cin,path2Patient);
@@ -254,7 +255,7 @@ int main()
     params2.push_back("ns");
     //params.push_back("name");
     CROW_ROUTE(app, "/updatePatient")
-        ([&patients, &params](const crow::request& req) {
+        ([&patients,&diabetics,&alcholics,&handicaps,&hypertensions,&scholars, &params](const crow::request& req) {
         crow::json::wvalue x;
     auto updates = req.raw_url;
 
@@ -286,6 +287,10 @@ int main()
 
     //get from list;
     auto i = patients.find(id);
+            auto patA =alcholics.find(id);
+            auto patH =hypertensions.find(id);
+            auto patD =diabetics.find(id);
+            auto patHan= handicaps.find(id);
     if (i != patients.end()) {
         std::cout << i->second.name << " " << i->second.age << std::endl;
         i->second.name = updateName;
@@ -303,6 +308,86 @@ int main()
         i->second.smsReceived = sms;
         i->second.noShow = ns;
     }
+            if (patH != hypertensions.end()) {
+                std::cout << i->second.name << " " << i->second.age << std::endl;
+                patH->second.name = updateName;
+                patH->second.age = updateAge;
+                patH->second.appointmentId = aID;
+                patH->second.gender = upGen;
+                patH->second.scheduledDay = upSched;
+                patH->second.appointmentDay = upADay;
+                patH->second.neighbourhood = upNeigh;
+                patH->second.scholarship = schol;
+                patH->second.hypertension = hyp;
+                patH->second.diabetes = dia;
+                patH->second.alcoholism = alc;
+                patH->second.handicap = han;
+                patH->second.smsReceived = sms;
+                patH->second.noShow = ns;
+                if(!patH->second.hypertension){
+                    diabetics.erase(patH->second.id);
+                }
+            }
+            if (patA != alcholics.end()) {
+                std::cout << i->second.name << " " << i->second.age << std::endl;
+                patA->second.name = updateName;
+                patA->second.age = updateAge;
+                patA->second.appointmentId = aID;
+                patA->second.gender = upGen;
+                patA->second.scheduledDay = upSched;
+                patA->second.appointmentDay = upADay;
+                patA->second.neighbourhood = upNeigh;
+                patA->second.scholarship = schol;
+                patA->second.hypertension = hyp;
+                patA->second.diabetes = dia;
+                patA->second.alcoholism = alc;
+                patA->second.handicap = han;
+                patA->second.smsReceived = sms;
+                patA->second.noShow = ns;
+                if(!patA->second.alcoholism){
+                    alcholics.erase(patA->second.id);
+                }
+            }
+            if (patD != diabetics.end()) {
+                std::cout << i->second.name << " " << i->second.age << std::endl;
+                patD->second.name = updateName;
+                patD->second.age = updateAge;
+                patD->second.appointmentId = aID;
+                patD->second.gender = upGen;
+                patD->second.scheduledDay = upSched;
+                patD->second.appointmentDay = upADay;
+                patD->second.neighbourhood = upNeigh;
+                patD->second.scholarship = schol;
+                patD->second.hypertension = hyp;
+                patD->second.diabetes = dia;
+                patD->second.alcoholism = alc;
+                patD->second.handicap = han;
+                patD->second.smsReceived = sms;
+                patD->second.noShow = ns;
+                if(!patD->second.diabetes){
+                    diabetics.erase(patD->second.id);
+                }
+            }
+            if (patHan != handicaps.end()) {
+                std::cout << i->second.name << " " << i->second.age << std::endl;
+                patHan->second.name = updateName;
+                patHan->second.age = updateAge;
+                patHan->second.appointmentId = aID;
+                patHan->second.gender = upGen;
+                patHan->second.scheduledDay = upSched;
+                patHan->second.appointmentDay = upADay;
+                patHan->second.neighbourhood = upNeigh;
+                patHan->second.scholarship = schol;
+                patHan->second.hypertension = hyp;
+                patHan->second.diabetes = dia;
+                patHan->second.alcoholism = alc;
+                patHan->second.handicap = han;
+                patHan->second.smsReceived = sms;
+                patHan->second.noShow = ns;
+                if(!patHan->second.handicap){
+                    handicaps.erase(patHan->second.id);
+                }
+            }
     x["PatientId"] = i->second.id;
     x["PatientName"] = i->second.name;
     x["AppointmentID"] = i->second.appointmentId;
@@ -403,24 +488,7 @@ int main()
             o = hypertensions.erase(id);
     res.write("Success!");
     return res;
-            });
-
- 
-    CROW_ROUTE(app, "/dog")
-        .methods("GET"_method)
-        ([](const crow::request& req) {
-        crow::response res;
-
-    // Set CORS headers
-    res.set_header("Access-Control-Allow-Origin", "*");
-    res.set_header("Access-Control-Allow-Methods", "GET");
-    res.set_header("Access-Control-Allow-Headers", "Content-Type");
-
-    res.write("Hello, World!");
-    res.code = 200;
-    return res;
-            });
-    
+            }); 
     CROW_ROUTE(app, "/random20")
         .methods("GET"_method)
         ([&patients](const crow::request& req) {
@@ -816,14 +884,14 @@ int main()
             outputFile.close();
                 return res;
                 });
-            
+
     CROW_ROUTE(app, "/import")
     .methods("POST"_method)
     ([&importString](const crow::request& req){
         auto x = crow::json::load(req.body);
-        crow::json::wvalue y(x);
         if (!x)
             return crow::response(crow::status::BAD_REQUEST); // same as crow::response(400)
+        crow::json::wvalue y(x);
         importString=y.dump();
         return crow::response{importString};
     });
