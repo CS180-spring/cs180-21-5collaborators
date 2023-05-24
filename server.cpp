@@ -529,7 +529,7 @@ int main()
     
     
     CROW_ROUTE(app, "/addPatient")
-        ([&patients, &params2,&num4ID](const crow::request& req) {
+        ([&diabetics,&alcholics,&handicaps,&hypertensions,&scholars,&patients, &params2,&num4ID](const crow::request& req) {
         crow::json::wvalue x;
     auto updates = req.raw_url;
 
@@ -577,6 +577,18 @@ int main()
         i.smsReceived = sms;
         i.noShow = ns;
         patients.insert(std::make_pair(i.id, i));
+            if(hyp){
+                hypertensions.insert(std::make_pair(i.id, i));
+            }
+            if(dia){
+                diabetics.insert(std::make_pair(i.id, i));
+            }
+            if(alc){
+                alcholics.insert(std::make_pair(i.id, i));
+            }
+            if(han){
+                handicaps.insert(std::make_pair(i.id, i));
+            }
     x["PatientId"] = i.id;
     x["PatientName"] = i.name;
     x["AppointmentID"] = i.appointmentId;
