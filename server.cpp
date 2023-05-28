@@ -40,6 +40,26 @@ public:
         , noShow(noShow) {};
     Patient(){};
 
+    /**New implementation that uses two vectors: one vector of IDs and one vector of strings (as dates).*/
+    std::vector<int> appointmentIds;
+    std::vector<std::string> appointmentDates;
+
+    /**addAppointment: Adds a new appointment.*/
+    void addAppointment(int id, std::string date)
+    {
+        appointmentIds.push_back(id);
+        appointmentDates.push_back(date);
+    }
+
+    /**removeAppointment: Removes an appointment and adds it to a route (?)*/
+    void removeAppointment(int index)
+    {
+        if (index >= appointmentIds.size() || index < 0)
+        {
+            // do nothing as index is OOB
+        }
+    }
+
     /**Here, I wrote a couple implementations for how we'd append new appointments to a patient. I'm not sure if they'll be useful - delete them if they're not. I'm just trying to do something.
      * I've named them appointments_ints, appointments_string, and appointments_struct respectively. It's probably better if you rename them back to just "appointments" after picking the most convenient one.
     */
