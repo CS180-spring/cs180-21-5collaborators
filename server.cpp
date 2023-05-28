@@ -54,9 +54,16 @@ public:
     /**removeAppointment: Removes an appointment and adds it to a route (?)*/
     void removeAppointment(int index)
     {
-        if (index >= appointmentIds.size() || index < 0)
-        {
+        if (index >= appointmentIds.size() || index < 0){
             // do nothing as index is OOB
+        } else {
+            int id = appointmentIds.at(index);
+            std::string date = appointmentDates.at(index);
+
+            appointmentIds.erase(index);
+            appointmentDates.erase(index);
+
+            // something with crow-route here. idk how it works
         }
     }
 
