@@ -4,24 +4,22 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 
-const Last20Table = ({ reload }) => {
+const Last20hyper = ({ visible, onClose }) => {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const [dialogVisible, setDialogVisible] = useState(false);
 
   useEffect(() => {
-    fetch("http://0.0.0.0:3000/last20")
+    fetch("http://0.0.0.0:3000/last20Hyper")
       .then((response) => response.json())
       .then((data) => setPatients(data));
-  }, [reload]);
+  }, []);
 
   const openDialog = (patient) => {
     setSelectedPatient(patient);
-    setDialogVisible(true);
   };
 
   const closeDialog = () => {
-    setDialogVisible(false);
+    setSelectedPatient(null);
   };
 
   const viewTemplate = (rowData) => {
@@ -37,7 +35,7 @@ const Last20Table = ({ reload }) => {
 
   return (
     <div>
-      <h3>Recently added patients</h3>
+      <h3>Hypertension patients</h3>
       <DataTable value={patients}>
         <Column field="PatientId" header="Patient ID" />
         <Column field="PatientName" header="Patient Name" />
@@ -46,7 +44,7 @@ const Last20Table = ({ reload }) => {
       </DataTable>
 
       <Dialog
-        visible={dialogVisible}
+        visible={!!selectedPatient}
         onHide={closeDialog}
         header="Patient Details"
         modal
@@ -74,6 +72,6 @@ const Last20Table = ({ reload }) => {
       </Dialog>
     </div>
   );
-}
-export default Last20Table;
+};
+export default Last20hyper;
 
