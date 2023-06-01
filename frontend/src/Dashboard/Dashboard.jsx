@@ -122,7 +122,7 @@ function Dashboard() {
   const handleDelete = async () => {
     const response = await fetch(`http://0.0.0.0:3000/deletePatient?id=${id}`);
     const data = await response.json();
-    console.log(data); // add this line
+    console.log(data);
     setInfo(null);
     setDeleteSuccess(true);
   };

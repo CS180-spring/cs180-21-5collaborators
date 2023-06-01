@@ -140,9 +140,7 @@ const AddPatient = ({ visible, onHide, onAdd }) => {
           <label htmlFor="scheduledDay">Scheduled Day</label>
           <Calendar
             id="scheduledDay"
-            value={
-              newPatient.ScheduledDay ? new Date(newPatient.ScheduledDay) : null
-            }
+            value={new Date()} // Set the value prop to the current date
             onChange={(e) => handleInputChange(e, "ScheduledDay")}
             dateFormat="yy-mm-dd"
             showIcon
