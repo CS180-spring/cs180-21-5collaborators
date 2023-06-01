@@ -39,6 +39,39 @@ public:
         , scholarship(scholarship), hypertension(hypertension), diabetes(diabetes), alcoholism(alcoholism), handicap(handicap), smsReceived(smsReceived)
         , noShow(noShow) {};
     Patient(){};
+
+    /**New implementation that uses two vectors: one vector of IDs and one vector of strings (as dates).*/
+    std::vector<int> appointmentIds;
+    std::vector<std::string> scheduleDates;
+    std::vector<std::string> appointmentDates;
+
+    /**addAppointment: Adds a new appointment.*/
+    void addAppointment(int id, std::string schedule, std::string appointment)
+    {
+        appointmentIds.push_back(id);
+        scheduleDates.push_back(schedule);
+        appointmentDates.push_back(date);
+    }
+
+    /**removeAppointment: Removes an appointment and adds it to a route (?)*/
+    void removeAppointment(int index)
+    {
+        if (index >= appointmentIds.size() || index < 0){
+            // do nothing as index is OOB
+        } else {
+            int id = appointmentIds.at(index);
+            std::string schedule = scheduleDates.at(index);
+            std::string date = appointmentDates.at(index);
+
+            appointmentIds.erase(index);
+            scheduleDates.erase(index);
+            appointmentDates.erase(index);
+
+            // something with crow-route here. idk how it works
+        }
+    }
+
+    /**Deleted the old implementations as we don't need them. They're still in previous commits if referencing is needed.*/
 };
 
 int main()
