@@ -42,12 +42,14 @@ public:
 
     /**New implementation that uses two vectors: one vector of IDs and one vector of strings (as dates).*/
     std::vector<int> appointmentIds;
+    std::vector<std::string> scheduleDates;
     std::vector<std::string> appointmentDates;
 
     /**addAppointment: Adds a new appointment.*/
-    void addAppointment(int id, std::string date)
+    void addAppointment(int id, std::string schedule, std::string appointment)
     {
         appointmentIds.push_back(id);
+        scheduleDates.push_back(schedule);
         appointmentDates.push_back(date);
     }
 
@@ -58,9 +60,11 @@ public:
             // do nothing as index is OOB
         } else {
             int id = appointmentIds.at(index);
+            std::string schedule = scheduleDates.at(index);
             std::string date = appointmentDates.at(index);
 
             appointmentIds.erase(index);
+            scheduleDates.erase(index);
             appointmentDates.erase(index);
 
             // something with crow-route here. idk how it works
