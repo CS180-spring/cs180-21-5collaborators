@@ -87,9 +87,6 @@ const Header = ({ onAdd, onReload, setReloadLast20 }) => {
             <Nav.Link onClick={handleAddNew} className="btn btn-primary mr-4">
               <FaPlus className="mr-1" /> Add New
             </Nav.Link>
-            <Nav.Link onClick={handleExport} className="btn btn-warning mr-4">
-              <FaDownload className="mr-1" /> Export
-            </Nav.Link>
             <label className="btn btn-info mr-4" htmlFor="import-file">
               <FaUpload className="mr-1" /> Import
               <input
@@ -100,6 +97,9 @@ const Header = ({ onAdd, onReload, setReloadLast20 }) => {
                 onChange={handleImport}
               />
             </label>
+            <Nav.Link onClick={handleExport} className="btn btn-warning mr-4">
+              <FaDownload className="mr-1" /> Export
+            </Nav.Link>
             <Nav.Link onClick={handleLogout} className="btn btn-danger">
               <FaSignOutAlt className="mr-1" /> Log Out
             </Nav.Link>
